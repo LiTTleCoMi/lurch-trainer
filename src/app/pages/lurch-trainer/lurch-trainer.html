@@ -1,0 +1,37 @@
+<div class="page-container">
+	<div class="sidebar">
+		<button (click)="toggleShowInstructions()">
+			<span class="material-symbols-outlined"> book_5 </span>
+			<span>Instructions</span>
+		</button>
+		<hr />
+		<div class="strafe-controls">
+			<label for="strafeSelector">Choose a strafe</label>
+			<select name="strafeSelector" id="strafeSelector">
+				@for (strafe of strafes; track $index) {
+				<option [value]="strafe.name">{{ strafe.name }}</option>
+				}
+			</select>
+			<button
+				[class]="training ? 'stop' : 'start'"
+				class="toggle-training"
+				(click)="toggleTraining()"
+			>
+				{{ training ? 'Stop' : 'Start' }}
+			</button>
+		</div>
+	</div>
+	<app-overlay [training]="training" />
+	<div class="instructions-container" [class.visible]="showInstructions">
+		<div class="instructions">
+			<button class="close-instructions" (click)="toggleShowInstructions()">
+				<span class="material-symbols-outlined"> close </span>
+			</button>
+			<h1>Instructions</h1>
+			<hr />
+			<section>
+				
+			</section>
+		</div>
+	</div>
+</div>

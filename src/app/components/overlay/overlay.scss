@@ -1,0 +1,91 @@
+.keyboard {
+	display: grid;
+	grid-template-columns: repeat(3, 60px);
+	grid-template-rows: repeat(2, 60px) 50px;
+	gap: 3px;
+	background-color: rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.key {
+	position: relative; /* needed for the ::before layer */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #222;
+	color: #ddd;
+	font-size: 1.2rem;
+	border-radius: 5px;
+	border: 3px solid transparent;
+	isolation: isolate; /* prevents blending outside */
+
+	/* pressed state (active key down) */
+	&.pressed {
+		background-color: #ddd;
+		color: #222;
+	}
+
+	/* Shared overlay layer */
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-color: transparent;
+		mix-blend-mode: color;
+		pointer-events: none;
+		z-index: 0;
+		// transition: background-color 0.2s ease;
+	}
+
+	/* Bring content above tint */
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+
+	/* Active state variations */
+	&.press {
+		border-color: #00ff6a;
+	}
+	&.press::before {
+		background-color: rgba(0, 255, 106, 0.5);
+	}
+
+	&.release {
+		border-color: #ff3c00;
+	}
+	&.release::before {
+		background-color: rgba(255, 60, 0, 0.5);
+	}
+
+	&.hold {
+		border-color: rgb(0, 153, 255);
+	}
+	&.hold::before {
+		background-color: rgba(0, 153, 255, 0.5);
+	}
+
+
+	/* Layout positions */
+	&#w {
+		grid-column: 2;
+		grid-row: 1;
+	}
+	&#a {
+		grid-column: 1;
+		grid-row: 2;
+	}
+	&#s {
+		grid-column: 2;
+		grid-row: 2;
+	}
+	&#d {
+		grid-column: 3;
+		grid-row: 2;
+	}
+	&#space {
+		grid-column: 1 / 4;
+		grid-row: 3;
+	}
+}

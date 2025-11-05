@@ -32,8 +32,29 @@
 			height: 95%;
 			width: 800px;
 			border-radius: 20px;
-			background-color: rgba(0, 0, 0, 0.1);
+			background-color: rgba(0, 0, 0, 0.15);
 			padding: 40px;
+
+			ul {
+				margin: 0;
+
+				li {
+					margin: 15px 0;
+
+					> ul {
+						margin: 10px 0;
+
+						> li {
+							margin: 5px 0;
+						}
+					}
+				}
+			}
+
+			p {
+				margin: 0;
+				font-size: 1.3rem;
+			}
 
 			h1 {
 				margin: 0;
@@ -50,7 +71,7 @@
 				height: 55px;
 				border-radius: 10px;
 				font-size: 20px;
-				background-color: rgba(0, 0, 0, 0.2);
+				background-color: rgba(0, 0, 0, 0.15);
 				border: none;
 				cursor: pointer;
 				transition: background-color 0.2s ease;

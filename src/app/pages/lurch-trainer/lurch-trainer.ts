@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Overlay } from "../../components/overlay/overlay";
 import { StrafesInterface } from '../../interfaces/strafes.interface';
 import { StrafesService } from '../../services/strafes.service';
+import { Popup } from "../../components/popup/popup";
 
 @Component({
 	selector: 'app-lurch-trainer',
-	imports: [Overlay],
+	imports: [Overlay, Popup],
 	templateUrl: './lurch-trainer.html',
 	styleUrl: './lurch-trainer.scss',
 })
@@ -13,10 +14,10 @@ export class LurchTrainer implements OnInit {
 	private strafesService = inject(StrafesService);
 	strafes: StrafesInterface = [];
 	training = false;
-	showPopup = false;
+	popupVisible = false;
 	popupPages = {
 		instructions: false,
-	}
+	};
 
 	ngOnInit() {
 		this.strafes = this.strafesService.strafes;
@@ -32,7 +33,10 @@ export class LurchTrainer implements OnInit {
 	toggleTraining() {
 		this.training = !this.training;
 	}
-	toggleShowPopup() {
-		this.showPopup = !this.showPopup;
+	showPopup() {
+		this.popupVisible = true;
+	}
+	hidePopup() {
+		this.popupVisible = false;
 	}
 }

@@ -32,11 +32,23 @@
 		background-color: rgba(0, 0, 0, 0.15);
 		padding: 40px;
 
-		> * {
+		.content {
 			display: none;
 
 			&.visible {
 				display: block;
+			}
+		}
+
+		.instructions {
+			.green {
+				color: colors.$primary-green;
+			}
+			.blue {
+				color: colors.$primary-blue;
+			}
+			.red {
+				color: colors.$primary-red;
 			}
 		}
 
@@ -60,16 +72,6 @@
 
 		h1 {
 			margin: 0;
-		}
-
-		.green {
-			color: colors.$primary-green;
-		}
-		.blue {
-			color: colors.$primary-blue;
-		}
-		.red {
-			color: colors.$primary-red;
 		}
 
 		.close-popup {

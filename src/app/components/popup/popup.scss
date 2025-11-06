@@ -32,14 +32,14 @@
 		background-color: rgba(0, 0, 0, 0.15);
 		padding: 40px;
 
-		.instructions {
+		> * {
 			display: none;
 
 			&.visible {
 				display: block;
 			}
 		}
-		
+
 		ul {
 			margin: 0;
 			li {

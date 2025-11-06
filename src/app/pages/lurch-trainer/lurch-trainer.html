@@ -1,6 +1,6 @@
 <div class="page-container">
 	<div class="sidebar">
-		<button (click)="toggleShowInstructions()">
+		<button (click)="toggleShowPopup()">
 			<span class="material-symbols-outlined"> book_5 </span>
 			<span>Instructions</span>
 		</button>
@@ -22,9 +22,9 @@
 		</div>
 	</div>
 	<app-overlay [training]="training" />
-	<div class="instructions-container" [class.visible]="showInstructions">
+	<div class="popup-page" [class.visible]="showPopup">
 		<div class="instructions">
-			<button class="close-instructions" (click)="toggleShowInstructions()">
+			<button class="close-popup" (click)="toggleShowPopup()">
 				<span class="material-symbols-outlined"> close </span>
 			</button>
 			<h1>Instructions</h1>

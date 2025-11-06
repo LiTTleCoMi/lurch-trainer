@@ -13,7 +13,10 @@ export class LurchTrainer implements OnInit {
 	private strafesService = inject(StrafesService);
 	strafes: StrafesInterface = [];
 	training = false;
-	showInstructions = true;
+	showPopup = false;
+	popupPages = {
+		instructions: false,
+	}
 
 	ngOnInit() {
 		this.strafes = this.strafesService.strafes;
@@ -29,7 +32,7 @@ export class LurchTrainer implements OnInit {
 	toggleTraining() {
 		this.training = !this.training;
 	}
-	toggleShowInstructions() {
-		this.showInstructions = !this.showInstructions;
+	toggleShowPopup() {
+		this.showPopup = !this.showPopup;
 	}
 }

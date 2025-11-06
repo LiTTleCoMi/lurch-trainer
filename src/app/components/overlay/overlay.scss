@@ -1,3 +1,5 @@
+@use 'colors';
+
 .keyboard {
 	display: grid;
 	grid-template-columns: repeat(3, 60px);
@@ -13,18 +15,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #222;
-	color: #ddd;
+	background-color: colors.$primary-dark-gray;
+	color: colors.$primary-light-gray;
 	font-size: 1.2rem;
 	border-radius: 5px;
 	border: 3px solid transparent;
 	isolation: isolate; /* prevents blending outside */
 
-	/* pressed state (active key down) */
-	&.pressed {
-		background-color: #ddd;
-		color: #222;
-	}
 
 	/* Shared overlay layer */
 	&::before {
@@ -35,7 +32,6 @@
 		mix-blend-mode: color;
 		pointer-events: none;
 		z-index: 0;
-		// transition: background-color 0.2s ease;
 	}
 
 	/* Bring content above tint */
@@ -45,25 +41,30 @@
 	}
 
 	/* Active state variations */
+	&.pressed {
+		background-color: colors.$primary-light-gray;
+		color: colors.$primary-dark-gray;
+	}
+
 	&.press {
-		border-color: #00ff6a;
+		border-color: colors.$primary-green;
 	}
 	&.press::before {
-		background-color: rgba(0, 255, 106, 0.5);
+		background-color: rgba(colors.$primary-green, 0.5);
 	}
 
 	&.release {
-		border-color: #ff3c00;
+		border-color: colors.$primary-red;
 	}
 	&.release::before {
-		background-color: rgba(255, 60, 0, 0.5);
+		background-color: rgba(colors.$primary-red, 0.5);
 	}
 
 	&.hold {
-		border-color: #0099ff;
+		border-color: colors.$primary-blue;
 	}
 	&.hold::before {
-		background-color: rgba(0, 153, 255, 0.5);
+		background-color: rgba(colors.$primary-blue, 0.5);
 	}
 
 

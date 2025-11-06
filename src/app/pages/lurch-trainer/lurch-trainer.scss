@@ -7,12 +7,11 @@
 	align-items: center;
 	gap: 15px;
 
-
 	//
 
 	.sidebar {
 		box-sizing: border-box;
-		width: 250px;
+		width: 300px;
 		min-width: fit-content;
 		height: 100%;
 		display: flex;
@@ -20,6 +19,14 @@
 		gap: 15px;
 		background-color: rgba(0, 0, 0, 0.1);
 		padding: 10px;
+
+		* {
+			font-size: 16px;
+		}
+
+		.material-symbols-outlined {
+			font-size: 24px;
+		}
 
 		button {
 			cursor: pointer;
@@ -62,7 +69,7 @@
 			label {
 				text-align: center;
 				background-color: colors.$primary-dark-gray;
-				color: colors.$primary-light-gray;
+				color: white;
 				border-radius: 5px;
 				padding: 5px;
 			}
@@ -71,7 +78,7 @@
 				outline: none;
 				border: none;
 				border-radius: 5px;
-				padding: 5px;
+				padding: 3px 10px;
 			}
 		}
 	}

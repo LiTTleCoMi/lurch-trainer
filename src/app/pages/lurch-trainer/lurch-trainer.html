@@ -15,7 +15,8 @@
 			<button
 				[class]="training ? 'stop' : 'start'"
 				class="toggle-training"
-				(click)="toggleTraining()"
+				(click)="toggleTraining($event)"
+				[attr.tabindex]="-1"
 			>
 				{{ training ? 'Stop' : 'Start' }}
 			</button>

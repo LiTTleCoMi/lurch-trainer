@@ -29,7 +29,8 @@ export class LurchTrainer implements OnInit {
 		});
 	}
 
-	toggleTraining() {
+	toggleTraining(event: Event) {
+		(event.target as HTMLElement).blur()
 		this.training = !this.training;
 	}
 	showPopup(page: PopupPages) {

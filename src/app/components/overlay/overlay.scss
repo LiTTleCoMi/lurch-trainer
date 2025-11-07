@@ -1,97 +1,139 @@
 @use 'colors';
+$key-size: 70px;
 
 .overlay {
 	display: flex;
+	gap: 10px;
 	background-color: rgba(0, 0, 0, 0.2);
-
 	border-radius: 10px;
 	padding: 10px;
-}
 
-.keyboard {
-	display: grid;
-	grid-template-columns: repeat(3, 70px);
-	grid-template-rows: repeat(2, 70px) 50px;
-	gap: 3px;
-}
+	.keyboard {
+		display: grid;
+		grid-template-columns: repeat(3, $key-size);
+		grid-template-rows: repeat(2, $key-size) 50px;
+		gap: 3px;
 
-.key {
-	position: relative; /* needed for the ::before layer */
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: colors.$primary-dark-gray;
-	color: colors.$primary-light-gray;
-	font-size: 1.2rem;
-	border-radius: 5px;
-	border: 3px solid transparent;
-	isolation: isolate; /* prevents blending outside */
+		.key {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: colors.$primary-dark-gray;
+			color: colors.$primary-light-gray;
+			font-size: 1.2rem;
+			border-radius: 5px;
+			border: 3px solid transparent;
+			isolation: isolate;
 
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background-color: transparent;
+				mix-blend-mode: color;
+				pointer-events: none;
+				z-index: 0;
+			}
 
-	/* Shared overlay layer */
-	&::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background-color: transparent;
-		mix-blend-mode: color;
-		pointer-events: none;
-		z-index: 0;
+			> * {
+				position: relative;
+				z-index: 1;
+			}
+
+			&.pressed {
+				background-color: colors.$primary-light-gray;
+				color: colors.$primary-dark-gray;
+			}
+
+			&.press {
+				border-color: colors.$primary-green;
+			}
+			&.press::before {
+				background-color: rgba(colors.$primary-green, 0.5);
+			}
+
+			&.release {
+				border-color: colors.$primary-red;
+			}
+			&.release::before {
+				background-color: rgba(colors.$primary-red, 0.5);
+			}
+
+			&.hold {
+				border-color: colors.$primary-blue;
+			}
+			&.hold::before {
+				background-color: rgba(colors.$primary-blue, 0.5);
+			}
+
+			/* Layout positions */
+			&#w { grid-column: 2; grid-row: 1; }
+			&#a { grid-column: 1; grid-row: 2; }
+			&#s { grid-column: 2; grid-row: 2; }
+			&#d { grid-column: 3; grid-row: 2; }
+			&#space { grid-column: 1 / 4; grid-row: 3; }
+		}
 	}
 
-	/* Bring content above tint */
-	> * {
-		position: relative;
-		z-index: 1;
-	}
+	.mouse {
+		.wheel {
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
+			width: 30px;
+			height: $key-size;
+			border-radius: 5px;
+			overflow: hidden;
 
-	/* Active state variations */
-	&.pressed {
-		background-color: colors.$primary-light-gray;
-		color: colors.$primary-dark-gray;
-	}
+			> * {
+				position: relative;
+				flex: 1;
+				background-color: colors.$primary-dark-gray;
+				border: 3px solid transparent;
+				border-radius: 3px;
+				isolation: isolate;
 
-	&.press {
-		border-color: colors.$primary-green;
-	}
-	&.press::before {
-		background-color: rgba(colors.$primary-green, 0.5);
-	}
+				&::before {
+					content: '';
+					position: absolute;
+					inset: 0;
+					background-color: transparent;
+					mix-blend-mode: color;
+					pointer-events: none;
+					z-index: 0;
+				}
 
-	&.release {
-		border-color: colors.$primary-red;
-	}
-	&.release::before {
-		background-color: rgba(colors.$primary-red, 0.5);
-	}
+				> * {
+					position: relative;
+					z-index: 1;
+				}
 
-	&.hold {
-		border-color: colors.$primary-blue;
-	}
-	&.hold::before {
-		background-color: rgba(colors.$primary-blue, 0.5);
-	}
+				&.pressed {
+					background-color: colors.$primary-light-gray;
+				}
 
+				&.press {
+					border-color: colors.$primary-green;
+				}
+				&.press::before {
+					background-color: rgba(colors.$primary-green, 0.5);
+				}
 
-	/* Layout positions */
-	&#w {
-		grid-column: 2;
-		grid-row: 1;
-	}
-	&#a {
-		grid-column: 1;
-		grid-row: 2;
-	}
-	&#s {
-		grid-column: 2;
-		grid-row: 2;
-	}
-	&#d {
-		grid-column: 3;
-		grid-row: 2;
-	}
-	&#space {
-		grid-column: 1 / 4;
-		grid-row: 3;
+				&.release {
+					border-color: colors.$primary-red;
+				}
+				&.release::before {
+					background-color: rgba(colors.$primary-red, 0.5);
+				}
+
+				&.hold {
+					border-color: colors.$primary-blue;
+				}
+				&.hold::before {
+					background-color: rgba(colors.$primary-blue, 0.5);
+				}
+			}
+		}
 	}
 }

@@ -53,8 +53,20 @@
 	</div>
 	<div class="mouse">
 		<div class="wheel">
-			<div></div>
-			<div></div>
+			<div
+				[class.pressed]="isActivated({ action: 'forward', useScroll: true })"
+				[class.press]="shouldActivate({ action: 'forward', useScroll: true })"
+				[class.release]="shouldUnactivate({ action: 'forward', useScroll: true })"
+				[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: true })"
+				class="wheel-up"
+			></div>
+			<div
+				[class.pressed]="isActivated({ action: 'jump', useScroll: true })"
+				[class.press]="shouldActivate({ action: 'jump', useScroll: true })"
+				[class.release]="shouldUnactivate({ action: 'jump', useScroll: true })"
+				[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: true })"
+				class="wheel-down"
+			></div>
 		</div>
 	</div>
 </div>

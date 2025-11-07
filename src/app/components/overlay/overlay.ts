@@ -64,6 +64,7 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	private onActivatedActionsChange() {
+		console.log(this.activatedActions);
 		if (!this.training()) return;
 		if (this.isStepMatched()) {
 			this.advanceStep();
@@ -160,6 +161,6 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	isActivated(action: BoundAction): boolean {
-		return this.activatedActions.has(action);
+		return !!Array.from(this.activatedActions).find(a => JSON.stringify(a) === JSON.stringify(action));
 	}
 }

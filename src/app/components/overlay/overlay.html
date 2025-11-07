@@ -1,55 +1,60 @@
-<div class="keyboard">
-	<div
-		[class.pressed]="isActivated({ action: 'forward', useScroll: false })"
-		[class.press]="shouldActivate({ action: 'forward', useScroll: false })"
-		[class.release]="shouldUnactivate({ action: 'forward', useScroll: false })"
-		[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: false })"
-		class="key"
-		id="w"
-	>
-		w
+<div class="overlay">
+	<div class="keyboard">
+		<div
+			[class.pressed]="isActivated({ action: 'forward', useScroll: false })"
+			[class.press]="shouldActivate({ action: 'forward', useScroll: false })"
+			[class.release]="shouldUnactivate({ action: 'forward', useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: false })"
+			class="key"
+			id="w"
+		>
+			w
+		</div>
+		<div
+			[class.pressed]="isActivated({ action: 'left', useScroll: false })"
+			[class.press]="shouldActivate({ action: 'left', useScroll: false })"
+			[class.release]="shouldUnactivate({ action: 'left', useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: 'left', useScroll: false })"
+			class="key"
+			id="a"
+		>
+			a
+		</div>
+		<div
+			[class.pressed]="isActivated({ action: 'backward', useScroll: false })"
+			[class.press]="shouldActivate({ action: 'backward', useScroll: false })"
+			[class.release]="shouldUnactivate({ action: 'backward', useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: 'backward', useScroll: false })"
+			class="key"
+			id="s"
+		>
+			s
+		</div>
+		<div
+			[class.pressed]="isActivated({ action: 'right', useScroll: false })"
+			[class.press]="shouldActivate({ action: 'right', useScroll: false })"
+			[class.release]="shouldUnactivate({ action: 'right', useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: 'right', useScroll: false })"
+			class="key"
+			id="d"
+		>
+			d
+		</div>
+		<div
+			[class.pressed]="isActivated({ action: 'jump', useScroll: false })"
+			[class.press]="shouldActivate({ action: 'jump', useScroll: false })"
+			[class.release]="shouldUnactivate({ action: 'jump', useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: false })"
+			class="key"
+			id="space"
+		>
+			space
+		</div>
 	</div>
-	<div
-		[class.pressed]="isActivated({ action: 'left', useScroll: false })"
-		[class.press]="shouldActivate({ action: 'left', useScroll: false })"
-		[class.release]="shouldUnactivate({ action: 'left', useScroll: false })"
-		[class.hold]="shouldRemainActivated({ action: 'left', useScroll: false })"
-		class="key"
-		id="a"
-	>
-		a
+	<div class="mouse">
+		<div class="wheel">
+			<div></div>
+			<div></div>
+		</div>
 	</div>
-	<div
-		[class.pressed]="isActivated({ action: 'backward', useScroll: false })"
-		[class.press]="shouldActivate({ action: 'backward', useScroll: false })"
-		[class.release]="shouldUnactivate({ action: 'backward', useScroll: false })"
-		[class.hold]="shouldRemainActivated({ action: 'backward', useScroll: false })"
-		class="key"
-		id="s"
-	>
-		s
-	</div>
-	<div
-		[class.pressed]="isActivated({ action: 'right', useScroll: false })"
-		[class.press]="shouldActivate({ action: 'right', useScroll: false })"
-		[class.release]="shouldUnactivate({ action: 'right', useScroll: false })"
-		[class.hold]="shouldRemainActivated({ action: 'right', useScroll: false })"
-		class="key"
-		id="d"
-	>
-		d
-	</div>
-	<div
-		[class.pressed]="isActivated({ action: 'jump', useScroll: false })"
-		[class.press]="shouldActivate({ action: 'jump', useScroll: false })"
-		[class.release]="shouldUnactivate({ action: 'jump', useScroll: false })"
-		[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: false })"
-		class="key"
-		id="space"
-	>
-		space
-	</div>
-</div>
-<div class="scroll-wheel">
-	
 </div>

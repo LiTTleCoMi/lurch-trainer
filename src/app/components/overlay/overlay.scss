@@ -1,13 +1,18 @@
 @use 'colors';
 
+.overlay {
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.2);
+
+	border-radius: 10px;
+	padding: 10px;
+}
+
 .keyboard {
 	display: grid;
 	grid-template-columns: repeat(3, 70px);
 	grid-template-rows: repeat(2, 70px) 50px;
 	gap: 3px;
-	background-color: rgba(0, 0, 0, 0.2);
-	padding: 10px;
-	border-radius: 10px;
 }
 
 .key {

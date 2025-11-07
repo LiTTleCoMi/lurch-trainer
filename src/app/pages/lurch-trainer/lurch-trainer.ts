@@ -16,7 +16,7 @@ export class LurchTrainer implements OnInit {
 	strafes: StrafeInterface = [];
 	training = false;
 	protected popupVisible = false;
-	protected popupPage: PopupPages = 'instructions';
+	protected popupPage: PopupPages = '';
 
 	ngOnInit() {
 		this.strafes = this.strafesService.strafes;
@@ -39,5 +39,6 @@ export class LurchTrainer implements OnInit {
 	}
 	hidePopup() {
 		this.popupVisible = false;
+		this.popupPage = '';
 	}
 }

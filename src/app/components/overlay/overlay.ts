@@ -76,11 +76,7 @@ export class Overlay implements OnInit, OnChanges {
 		if (this.activatedActions.size !== nextActions.length) return false;
 
 		for (const next of nextActions) {
-			if (
-				![...this.activatedActions].some(
-					(a) => a.action === next.action && a.useScroll === next.useScroll
-				)
-			) {
+			if (![...this.activatedActions].some((a) => a.action === next.action)) {
 				return false;
 			}
 		}
@@ -161,6 +157,8 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	isActivated(action: BoundAction): boolean {
-		return !!Array.from(this.activatedActions).find(a => JSON.stringify(a) === JSON.stringify(action));
+		return !!Array.from(this.activatedActions).find(
+			(a) => JSON.stringify(a) === JSON.stringify(action)
+		);
 	}
 }

@@ -37,19 +37,27 @@ export class InputService {
 		return { action, useScroll: isScroll };
 	}
 
-	private hasAction(action: Action): boolean {
-		return [...this.activeActions].some((a) => a.action === action);
+	private hasAction(action: BoundAction): boolean {
+		return [...this.activeActions].some(
+			(a) => a.action === action.action && a.useScroll === action.useScroll
+		);
 	}
 
-	private removeAction(action: Action) {
-		this.activeActions = new Set([...this.activeActions].filter((a) => a.action !== action));
+	private removeAction(action: BoundAction) {
+		this.activeActions = new Set(
+			[...this.activeActions].filter(
+				(a) => !(a.action === action.action && a.useScroll === action.useScroll)
+			)
+		);
 	}
 
 	pressKey(key: string) {
 		const action = this.getActionFromKey(key);
-		if (!action || this.hasAction(action)) return;
+		if (!action) return;
+		const bound = this.getBoundAction(action, false);
+		if (this.hasAction(bound)) return;
 
-		this.activeActions.add(this.getBoundAction(action, false));
+		this.activeActions.add(bound);
 		this._activatedActions.next(new Set(this.activeActions));
 	}
 
@@ -57,7 +65,8 @@ export class InputService {
 		const action = this.getActionFromKey(key);
 		if (!action) return;
 
-		this.removeAction(action);
+		const bound = this.getBoundAction(action, false);
+		this.removeAction(bound);
 		this._activatedActions.next(new Set(this.activeActions));
 	}
 
@@ -72,11 +81,7 @@ export class InputService {
 		const bound = this.getBoundAction(action, true);
 		this.activeActions.add(bound);
 		this._activatedActions.next(new Set(this.activeActions));
-
-		// Remove it after a short timeout
-		setTimeout(() => {
-			this.removeAction(action);
-			this._activatedActions.next(new Set(this.activeActions));
-		}, 10);
+		this.removeAction(bound);
+		this._activatedActions.next(new Set(this.activeActions));
 	}
 }

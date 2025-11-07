@@ -54,19 +54,19 @@
 	<div class="mouse">
 		<div class="wheel">
 			<div
-				[class.pressed]="isActivated({ action: 'forward', useScroll: true })"
-				[class.press]="shouldActivate({ action: 'forward', useScroll: true })"
-				[class.release]="shouldUnactivate({ action: 'forward', useScroll: true })"
-				[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: true })"
+				[class.pressed]="isActivated({ action: inputService.scrollBinds.up, useScroll: true })"
+				[class.press]="shouldActivate({ action: inputService.scrollBinds.up, useScroll: true })"
+				[class.release]="shouldUnactivate({ action: inputService.scrollBinds.up, useScroll: true })"
+				[class.hold]="shouldRemainActivated({ action: inputService.scrollBinds.up, useScroll: true })"
 				class="wheel-up"
 			>
 				{{ scrollUpCount }}
 			</div>
 			<div
-				[class.pressed]="isActivated({ action: 'jump', useScroll: true })"
-				[class.press]="shouldActivate({ action: 'jump', useScroll: true })"
-				[class.release]="shouldUnactivate({ action: 'jump', useScroll: true })"
-				[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: true })"
+				[class.pressed]="isActivated({ action: inputService.scrollBinds.down, useScroll: true })"
+				[class.press]="shouldActivate({ action: inputService.scrollBinds.down, useScroll: true })"
+				[class.release]="shouldUnactivate({ action: inputService.scrollBinds.down, useScroll: true })"
+				[class.hold]="shouldRemainActivated({ action: inputService.scrollBinds.down, useScroll: true })"
 				class="wheel-down"
 			>
 				{{ scrollDownCount }}

@@ -20,7 +20,6 @@ export class StrafesService {
 						{ action: 'forward', useScroll: false },
 						{ action: 'right', useScroll: false },
 					],
-					[{ action: 'right', useScroll: false }],
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'forward', useScroll: true },
@@ -42,7 +41,6 @@ export class StrafesService {
 						{ action: 'forward', useScroll: false },
 						{ action: 'left', useScroll: false },
 					],
-					[{ action: 'left', useScroll: false }],
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'forward', useScroll: true },

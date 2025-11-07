@@ -12,7 +12,7 @@ import { Action, BoundAction } from '../../interfaces/binds.interface';
 })
 export class Overlay implements OnInit, OnChanges {
 	private strafesService = inject(StrafesService);
-	private inputService = inject(InputService);
+	protected inputService = inject(InputService);
 
 	private activatedActions = new Set<BoundAction>();
 	readonly training = input.required<boolean>();
@@ -78,11 +78,11 @@ export class Overlay implements OnInit, OnChanges {
 	private scrollingDown = false;
 	private stopScrollingUp = setTimeout(() => {});
 	private stopScrollingDown = setTimeout(() => {});
-	private scrollBuffer = 100;
+	private scrollBuffer = 70;
 
 	private updateScrollBuffer() {
 		for (const a of this.activatedActions) {
-			if (!a.useScroll) return;
+			if (!a.useScroll) continue;
 			if (a.action === this.inputService.scrollBinds.up) {
 				clearTimeout(this.stopScrollingUp);
 				this.scrollingUp = true;
@@ -93,7 +93,7 @@ export class Overlay implements OnInit, OnChanges {
 				}, this.scrollBuffer);
 			} else if (a.action === this.inputService.scrollBinds.down) {
 				clearTimeout(this.stopScrollingDown);
-				this.scrollingDown = false;
+				this.scrollingDown = true;
 				this.scrollDownCount++;
 				this.stopScrollingDown = setTimeout(() => {
 					this.scrollingDown = false;
@@ -147,12 +147,15 @@ export class Overlay implements OnInit, OnChanges {
 	private updateStepDifferences() {
 		this.shouldBePressed = new Set(
 			[...this.nextStep].filter(
-				(next) => ![...this.currentStep].some((cur) => cur.action === next.action)
+				(next) =>
+					![...this.currentStep].some(
+						(cur) => cur.action === next.action && next.useScroll === cur.useScroll
+					)
 			)
 		);
 		this.shouldBeReleased = new Set(
 			[...this.currentStep].filter(
-				(cur) => ![...this.nextStep].some((next) => next.action === cur.action)
+				(cur) => ![...this.nextStep].some((next) => next.action === cur.action && next.useScroll === cur.useScroll)
 			)
 		);
 	}

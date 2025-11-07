@@ -1,7 +1,7 @@
 <div class="keyboard">
-	<div [class.pressed]="isPressed('w')" [class.press]="shouldPressKey('w')" [class.release]="shouldReleaseKey('w')" [class.hold]="shouldHoldKey('w')" class="key" id="w">w</div>
-	<div [class.pressed]="isPressed('a')" [class.press]="shouldPressKey('a')" [class.release]="shouldReleaseKey('a')" [class.hold]="shouldHoldKey('a')" class="key" id="a">a</div>
-	<div [class.pressed]="isPressed('s')" [class.press]="shouldPressKey('s')" [class.release]="shouldReleaseKey('s')" [class.hold]="shouldHoldKey('s')" class="key" id="s">s</div>
-	<div [class.pressed]="isPressed('d')" [class.press]="shouldPressKey('d')" [class.release]="shouldReleaseKey('d')" [class.hold]="shouldHoldKey('d')" class="key" id="d">d</div>
-	<div [class.pressed]="isPressed(' ')" [class.press]="shouldPressKey(' ')" [class.release]="shouldReleaseKey(' ')" [class.hold]="shouldHoldKey(' ')" class="key" id="space">space</div>
+	<div [class.pressed]="isActivated('forward')" [class.press]="shouldActivate('forward')" [class.release]="shouldUnactivate('forward')" [class.hold]="shouldRemainActivated('forward')" class="key" id="w">w</div>
+	<div [class.pressed]="isActivated('left')" [class.press]="shouldActivate('left')" [class.release]="shouldUnactivate('left')" [class.hold]="shouldRemainActivated('left')" class="key" id="a">a</div>
+	<div [class.pressed]="isActivated('backward')" [class.press]="shouldActivate('backward')" [class.release]="shouldUnactivate('backward')" [class.hold]="shouldRemainActivated('backward')" class="key" id="s">s</div>
+	<div [class.pressed]="isActivated('right')" [class.press]="shouldActivate('right')" [class.release]="shouldUnactivate('right')" [class.hold]="shouldRemainActivated('right')" class="key" id="d">d</div>
+	<div [class.pressed]="isActivated('jump')" [class.press]="shouldActivate('jump')" [class.release]="shouldUnactivate('jump')" [class.hold]="shouldRemainActivated('jump')" class="key" id="space">space</div>
 </div>

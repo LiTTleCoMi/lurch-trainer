@@ -1,0 +1,1 @@
+export type Actions = 'forward' | 'backward' | 'left' | 'right' | 'jump';

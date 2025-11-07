@@ -1,13 +1,13 @@
+import { Actions } from './binds.interface';
+
 export interface StrafeDirections {
-	direction1: string[];
-	direction2: string[];
+	direction1: Actions[][];
+	direction2: Actions[][];
 }
 
-// Each strafe item in the array has a name and directions
 export interface StrafeItem {
-	name: string; // e.g., 'forward_ras'
+	name: string;
 	directions: StrafeDirections;
 }
 
-// Strafes is now an array of StrafeItem
-export type StrafesInterface = StrafeItem[];
+export type StrafeInterface = StrafeItem[];

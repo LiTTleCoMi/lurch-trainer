@@ -1,23 +1,45 @@
 import { Injectable } from '@angular/core';
-import { StrafesInterface, StrafeItem } from '../interfaces/strafes.interface';
+import { StrafeInterface, StrafeItem } from '../interfaces/strafes.interface';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class StrafesService {
-	strafes: StrafesInterface = [
+	strafes: StrafeInterface = [
 		{
 			name: 'Forward RAS',
 			directions: {
-				direction1: ['a', 'aw', 'awd', 'd', 'ds'],
-				direction2: ['d', 'dw', 'dwa', 'a', 'as'],
+				direction1: [
+					['left'],
+					['left', 'forward'],
+					['left', 'forward', 'right'],
+					['right'],
+					['right', 'backward'],
+				],
+				direction2: [
+					['right'],
+					['right', 'forward'],
+					['right', 'forward', 'left'],
+					['left'],
+					['left', 'backward'],
+				],
 			},
 		},
 		{
 			name: 'Backward RAS',
 			directions: {
-				direction1: ['a', 'as', 'asd', 'sd'],
-				direction2: ['d', 'ds', 'dsa', 'sa'],
+				direction1: [
+					['left'],
+					['left', 'backward'],
+					['left', 'backward', 'right'],
+					['backward', 'right'],
+				],
+				direction2: [
+					['right'],
+					['right', 'backward'],
+					['right', 'backward', 'left'],
+					['backward', 'left'],
+				],
 			},
 		},
 	];

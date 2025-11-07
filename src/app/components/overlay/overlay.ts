@@ -1,8 +1,8 @@
 import { Component, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { KeyboardService } from '../../services/keyboard.service';
+import { InputService } from '../../services/input.service';
 import { StrafesService } from '../../services/strafes.service';
 import { StrafeDirections, StrafeItem } from '../../interfaces/strafes.interface';
-import { Actions } from '../../interfaces/binds.interface';
+import { Action, BoundAction } from '../../interfaces/binds.interface';
 
 @Component({
 	selector: 'app-overlay',
@@ -12,37 +12,33 @@ import { Actions } from '../../interfaces/binds.interface';
 })
 export class Overlay implements OnInit, OnChanges {
 	private strafesService = inject(StrafesService);
-	private keyboardService = inject(KeyboardService);
+	private keyboardService = inject(InputService);
 
-	activatedActions = new Set<string>();
+	activatedActions = new Set<BoundAction>();
 	readonly training = input.required<boolean>();
 
 	private selectedStrafe?: StrafeItem;
 	private currentDirectionNum = 1;
-	private currentDirection: StrafeDirections["direction1"] = [];
+	private currentDirection: StrafeDirections['direction1'] = [];
 	private currentStepIndex = 0;
 
-	currentStep = new Set<string>();
-	nextStep = new Set<string>();
-	shouldBePressed = new Set<string>();
-	shouldBeReleased = new Set<string>();
+	currentStep = new Set<BoundAction>();
+	nextStep = new Set<BoundAction>();
+	shouldBePressed = new Set<BoundAction>();
+	shouldBeReleased = new Set<BoundAction>();
 
 	ngOnInit() {
 		this.selectedStrafe = this.strafesService.selectedStrafe;
 		this.initializeTraining();
 
 		this.keyboardService.activatedActions$.subscribe({
-			next: (actions) => {
-				this.updateActivatedActions(actions);
-			},
+			next: (actions) => this.updateActivatedActions(actions),
 		});
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['training']) {
-			if (this.training()) {
-				this.initializeTraining();
-			}
+		if (changes['training'] && this.training()) {
+			this.initializeTraining();
 		}
 	}
 
@@ -56,12 +52,13 @@ export class Overlay implements OnInit, OnChanges {
 		this.currentDirectionNum = 1;
 		this.currentDirection = this.selectedStrafe.directions.direction1;
 		this.currentStepIndex = 0;
+
 		this.currentStep.clear();
 		this.nextStep = new Set(this.currentDirection[this.currentStepIndex]);
 		this.updateStepDifferences();
 	}
 
-	private updateActivatedActions(actions: Set<string>) {
+	private updateActivatedActions(actions: Set<BoundAction>) {
 		this.activatedActions = actions;
 		this.onActivatedActionsChange();
 	}
@@ -74,9 +71,17 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	private isStepMatched(): boolean {
-		if (this.activatedActions.size !== this.nextStep.size) return false;
-		for (const action of this.nextStep) {
-			if (!this.activatedActions.has(action)) return false;
+		const nextActions = Array.from(this.nextStep);
+		if (this.activatedActions.size !== nextActions.length) return false;
+
+		for (const next of nextActions) {
+			if (
+				![...this.activatedActions].some(
+					(a) => a.action === next.action && a.useScroll === next.useScroll
+				)
+			) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -100,7 +105,7 @@ export class Overlay implements OnInit, OnChanges {
 		if (this.currentDirectionNum === 1) {
 			this.currentDirectionNum = 2;
 			this.currentDirection = this.selectedStrafe.directions.direction2;
-		} else if (this.currentDirectionNum === 2) {
+		} else {
 			this.currentDirectionNum = 1;
 			this.currentDirection = this.selectedStrafe.directions.direction1;
 		}
@@ -111,21 +116,50 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	private updateStepDifferences() {
-		this.shouldBePressed = new Set([...this.nextStep].filter((k) => !this.currentStep.has(k)));
-		this.shouldBeReleased = new Set([...this.currentStep].filter((k) => !this.nextStep.has(k)));
+		this.shouldBePressed = new Set(
+			[...this.nextStep].filter(
+				(next) => ![...this.currentStep].some((cur) => cur.action === next.action)
+			)
+		);
+		this.shouldBeReleased = new Set(
+			[...this.currentStep].filter(
+				(cur) => ![...this.nextStep].some((next) => next.action === cur.action)
+			)
+		);
 	}
 
-	// Methods for template data binding
-	shouldRemainActivated(action: Actions): boolean {
-		return this.training() && this.nextStep.has(action) && !this.shouldBePressed.has(action);
+	// --- Template helpers ---
+	shouldRemainActivated(action: BoundAction): boolean {
+		return (
+			this.training() &&
+			[...this.nextStep].some(
+				(a) => a.action === action.action && a.useScroll === action.useScroll
+			) &&
+			![...this.shouldBePressed].some(
+				(a) => a.action === action.action && a.useScroll === action.useScroll
+			)
+		);
 	}
-	shouldActivate(action: Actions): boolean {
-		return this.training() && this.shouldBePressed.has(action);
+
+	shouldActivate(action: BoundAction): boolean {
+		return (
+			this.training() &&
+			[...this.shouldBePressed].some(
+				(a) => a.action === action.action && a.useScroll === action.useScroll
+			)
+		);
 	}
-	shouldUnactivate(action: Actions): boolean {
-		return this.training() && this.shouldBeReleased.has(action);
+
+	shouldUnactivate(action: BoundAction): boolean {
+		return (
+			this.training() &&
+			[...this.shouldBeReleased].some(
+				(a) => a.action === action.action && a.useScroll === action.useScroll
+			)
+		);
 	}
-	isActivated(action: Actions): boolean {
+
+	isActivated(action: BoundAction): boolean {
 		return this.activatedActions.has(action);
 	}
 }

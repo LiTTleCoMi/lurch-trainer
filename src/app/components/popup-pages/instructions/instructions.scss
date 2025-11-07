@@ -1,0 +1,37 @@
+@use 'colors';
+
+.green {
+	color: colors.$primary-green;
+}
+.blue {
+	color: colors.$primary-blue;
+}
+.red {
+	color: colors.$primary-red;
+}
+
+p {
+	margin: 0;
+	font-size: 20px;
+}
+
+ul {
+	margin: 0;
+	> li {
+		margin: 15px 0;
+		> ul {
+			margin: 10px 0;
+			> li {
+				margin: 5px 0;
+			}
+		}
+	}
+}
+
+.start-button {
+	background-color: colors.$primary-green;
+	color: colors.$primary-dark-gray;
+	padding: 0 5px;
+	border-radius: 5px;
+	font-size: 16px;
+}

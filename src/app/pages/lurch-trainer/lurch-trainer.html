@@ -1,9 +1,15 @@
 <div class="page-container">
 	<div class="sidebar">
-		<button (click)="showPopup('instructions')">
-			<span class="material-symbols-outlined"> book_5 </span>
-			<span>Instructions</span>
-		</button>
+		<div class="popup-buttons">
+			<button (click)="showPopup('instructions')">
+				<span class="material-symbols-outlined"> book_5 </span>
+				<span>Instructions</span>
+			</button>
+			<button (click)="showPopup('keybinds')">
+				<span class="material-symbols-outlined"> keyboard_alt </span>
+				<span>Keybinds</span>
+			</button>
+		</div>
 		<hr />
 		<div class="strafe-controls">
 			<label for="strafeSelector">Choose a strafe</label>

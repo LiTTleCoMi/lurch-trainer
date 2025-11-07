@@ -28,6 +28,12 @@
 			font-size: 24px;
 		}
 
+		.popup-buttons {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+		}
+
 		button {
 			cursor: pointer;
 			border: none;

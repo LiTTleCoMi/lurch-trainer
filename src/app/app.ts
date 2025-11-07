@@ -1,6 +1,6 @@
 import { Component, HostListener, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { KeyboardService } from './services/keyboard.service';
+import { InputService } from './services/input.service';
 
 @Component({
 	selector: 'app-root',
@@ -10,7 +10,16 @@ import { KeyboardService } from './services/keyboard.service';
 })
 export class App {
 	protected readonly title = signal('lurch-trainer');
-	private keyboardService = inject(KeyboardService);
+	private keyboardService = inject(InputService);
+
+	constructor() {
+		window.addEventListener('wheel', (event) => this.handleWheel(event));
+	}
+
+	private handleWheel(event: WheelEvent) {
+		const direction = event.deltaY < 0 ? 'up' : 'down';
+		this.keyboardService.scroll(direction);
+	}
 
 	@HostListener('window:keydown', ['$event'])
 	handleKeyDown(event: KeyboardEvent) {

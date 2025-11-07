@@ -10,18 +10,50 @@ export class StrafesService {
 			name: 'Forward RAS',
 			directions: {
 				direction1: [
-					['left'],
-					['left', 'forward'],
-					['left', 'forward', 'right'],
-					['right'],
-					['right', 'backward'],
+					[{ action: 'left', useScroll: false }],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[{ action: 'right', useScroll: false }],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
 				],
 				direction2: [
-					['right'],
-					['right', 'forward'],
-					['right', 'forward', 'left'],
-					['left'],
-					['left', 'backward'],
+					[{ action: 'right', useScroll: false }],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: false },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
 				],
 			},
 		},
@@ -29,16 +61,46 @@ export class StrafesService {
 			name: 'Backward RAS',
 			directions: {
 				direction1: [
-					['left'],
-					['left', 'backward'],
-					['left', 'backward', 'right'],
-					['backward', 'right'],
+					[{ action: 'left', useScroll: false }],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
 				],
 				direction2: [
-					['right'],
-					['right', 'backward'],
-					['right', 'backward', 'left'],
-					['backward', 'left'],
+					[{ action: 'right', useScroll: false }],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
 				],
 			},
 		},

@@ -1,8 +1,8 @@
-import { Actions } from './binds.interface';
+import { BoundAction } from './binds.interface';
 
 export interface StrafeDirections {
-	direction1: Actions[][];
-	direction2: Actions[][];
+	direction1: BoundAction[][];
+	direction2: BoundAction[][];
 }
 
 export interface StrafeItem {

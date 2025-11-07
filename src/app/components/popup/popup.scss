@@ -34,40 +34,12 @@
 
 		.content {
 			display: none;
+			pointer-events: none;
 
 			&.visible {
 				display: block;
+				pointer-events: auto;
 			}
-		}
-
-		.instructions {
-			.green {
-				color: colors.$primary-green;
-			}
-			.blue {
-				color: colors.$primary-blue;
-			}
-			.red {
-				color: colors.$primary-red;
-			}
-		}
-
-		ul {
-			margin: 0;
-			li {
-				margin: 15px 0;
-				> ul {
-					margin: 10px 0;
-					> li {
-						margin: 5px 0;
-					}
-				}
-			}
-		}
-
-		p {
-			margin: 0;
-			font-size: 1.3rem;
 		}
 
 		h1 {

@@ -12,9 +12,9 @@ import { Action, BoundAction } from '../../interfaces/binds.interface';
 })
 export class Overlay implements OnInit, OnChanges {
 	private strafesService = inject(StrafesService);
-	private keyboardService = inject(InputService);
+	private inputService = inject(InputService);
 
-	activatedActions = new Set<BoundAction>();
+	private activatedActions = new Set<BoundAction>();
 	readonly training = input.required<boolean>();
 
 	private selectedStrafe?: StrafeItem;
@@ -22,16 +22,16 @@ export class Overlay implements OnInit, OnChanges {
 	private currentDirection: StrafeDirections['direction1'] = [];
 	private currentStepIndex = 0;
 
-	currentStep = new Set<BoundAction>();
-	nextStep = new Set<BoundAction>();
-	shouldBePressed = new Set<BoundAction>();
-	shouldBeReleased = new Set<BoundAction>();
+	private currentStep = new Set<BoundAction>();
+	private nextStep = new Set<BoundAction>();
+	private shouldBePressed = new Set<BoundAction>();
+	private shouldBeReleased = new Set<BoundAction>();
 
 	ngOnInit() {
 		this.selectedStrafe = this.strafesService.selectedStrafe;
 		this.initializeTraining();
 
-		this.keyboardService.activatedActions$.subscribe({
+		this.inputService.activatedActions$.subscribe({
 			next: (actions) => this.updateActivatedActions(actions),
 		});
 	}
@@ -65,9 +65,41 @@ export class Overlay implements OnInit, OnChanges {
 
 	private onActivatedActionsChange() {
 		console.log(this.activatedActions);
+		this.updateScrollBuffer();
 		if (!this.training()) return;
 		if (this.isStepMatched()) {
 			this.advanceStep();
+		}
+	}
+
+	protected scrollUpCount = 0;
+	protected scrollDownCount = 0;
+	private scrollingUp = false;
+	private scrollingDown = false;
+	private stopScrollingUp = setTimeout(() => {});
+	private stopScrollingDown = setTimeout(() => {});
+	private scrollBuffer = 100;
+
+	private updateScrollBuffer() {
+		for (const a of this.activatedActions) {
+			if (!a.useScroll) return;
+			if (a.action === this.inputService.scrollBinds.up) {
+				clearTimeout(this.stopScrollingUp);
+				this.scrollingUp = true;
+				this.scrollUpCount++;
+				this.stopScrollingUp = setTimeout(() => {
+					this.scrollingUp = false;
+					this.scrollUpCount = 0;
+				}, this.scrollBuffer);
+			} else if (a.action === this.inputService.scrollBinds.down) {
+				clearTimeout(this.stopScrollingDown);
+				this.scrollingDown = false;
+				this.scrollDownCount++;
+				this.stopScrollingDown = setTimeout(() => {
+					this.scrollingDown = false;
+					this.scrollDownCount = 0;
+				}, this.scrollBuffer);
+			}
 		}
 	}
 
@@ -126,7 +158,7 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	// --- Template helpers ---
-	shouldRemainActivated(action: BoundAction): boolean {
+	protected shouldRemainActivated(action: BoundAction): boolean {
 		return (
 			this.training() &&
 			[...this.nextStep].some(
@@ -138,7 +170,7 @@ export class Overlay implements OnInit, OnChanges {
 		);
 	}
 
-	shouldActivate(action: BoundAction): boolean {
+	protected shouldActivate(action: BoundAction): boolean {
 		return (
 			this.training() &&
 			[...this.shouldBePressed].some(
@@ -147,7 +179,7 @@ export class Overlay implements OnInit, OnChanges {
 		);
 	}
 
-	shouldUnactivate(action: BoundAction): boolean {
+	protected shouldUnactivate(action: BoundAction): boolean {
 		return (
 			this.training() &&
 			[...this.shouldBeReleased].some(
@@ -156,7 +188,11 @@ export class Overlay implements OnInit, OnChanges {
 		);
 	}
 
-	isActivated(action: BoundAction): boolean {
+	protected isActivated(action: BoundAction): boolean {
+		if (action.useScroll) {
+			if (action.action === this.inputService.scrollBinds.up) return this.scrollingUp;
+			if (action.action === this.inputService.scrollBinds.down) return this.scrollingDown;
+		}
 		return !!Array.from(this.activatedActions).find(
 			(a) => JSON.stringify(a) === JSON.stringify(action)
 		);

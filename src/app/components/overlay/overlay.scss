@@ -87,6 +87,10 @@ $key-size: 70px;
 			overflow: hidden;
 
 			> * {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: colors.$primary-dark-gray;
 				position: relative;
 				flex: 1;
 				background-color: colors.$primary-dark-gray;

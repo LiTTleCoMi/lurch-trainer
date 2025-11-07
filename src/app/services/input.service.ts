@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Action, BoundAction } from '../interfaces/binds.interface';
+import { Action, BoundAction, ScrollDirection } from '../interfaces/binds.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,12 +19,9 @@ export class InputService {
 		jump: ' ',
 	};
 
-	scrollBinds: Record<Action, 'up' | 'down' | ''> = {
-		forward: 'up',
-		backward: '',
-		left: '',
-		right: '',
-		jump: 'down',
+	scrollBinds: Record<ScrollDirection, Action> = {
+		up: 'forward',
+		down: 'jump',
 	};
 
 	private getActionFromKey(key: string): Action | undefined {
@@ -70,14 +67,10 @@ export class InputService {
 		this._activatedActions.next(new Set(this.activeActions));
 	}
 
-	scroll(direction: 'up' | 'down') {
-		const action = (Object.keys(this.scrollBinds) as Action[]).find(
-			(a) => this.scrollBinds[a] === direction
-		);
-
+	scroll(direction: ScrollDirection) {
+		const action = this.scrollBinds[direction];
 		if (!action) return;
 
-		// Simulate a quick scroll action (momentary press)
 		const bound = this.getBoundAction(action, true);
 		this.activeActions.add(bound);
 		this._activatedActions.next(new Set(this.activeActions));

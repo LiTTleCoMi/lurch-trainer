@@ -59,14 +59,18 @@
 				[class.release]="shouldUnactivate({ action: 'forward', useScroll: true })"
 				[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: true })"
 				class="wheel-up"
-			></div>
+			>
+				{{ scrollUpCount }}
+			</div>
 			<div
 				[class.pressed]="isActivated({ action: 'jump', useScroll: true })"
 				[class.press]="shouldActivate({ action: 'jump', useScroll: true })"
 				[class.release]="shouldUnactivate({ action: 'jump', useScroll: true })"
 				[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: true })"
 				class="wheel-down"
-			></div>
+			>
+				{{ scrollDownCount }}
+			</div>
 		</div>
 	</div>
 </div>

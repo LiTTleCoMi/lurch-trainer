@@ -27,6 +27,11 @@ $key-size: 70px;
 			font-size: 1.2rem;
 			user-select: none;
 
+			&:hover {
+				background-color: colors.$primary-light-gray;
+				color: colors.$primary-dark-gray;
+			}
+
 			&.listening {
 				background-color: colors.$primary-light-gray;
 				color: colors.$primary-dark-gray;
@@ -72,7 +77,12 @@ $key-size: 70px;
 				color: colors.$primary-light-gray;
 				flex: 1;
 				background-color: colors.$primary-dark-gray;
-
+				
+				&:hover {
+					background-color: colors.$primary-light-gray;
+					color: colors.$primary-dark-gray;
+				}
+				
 				&.selected {
 					background-color: colors.$primary-light-gray;
 					color: colors.$primary-dark-gray;

@@ -24,6 +24,56 @@ export class InputService {
 		down: 'jump',
 	};
 
+	constructor() {
+		this.loadBinds();
+	}
+
+	private loadBinds() {
+		const storedKeyBinds = localStorage.getItem('KeyBinds');
+		const storedScrollBinds = localStorage.getItem('ScrollBinds');
+
+		if (storedKeyBinds) {
+			try {
+				const parsed = JSON.parse(storedKeyBinds);
+				if (typeof parsed === 'object' && parsed !== null) {
+					for (const [key, value] of Object.entries(parsed)) {
+						if (
+							['forward', 'backward', 'left', 'right', 'jump'].includes(key) &&
+							typeof value === 'string'
+						) {
+							this.keyBinds[key as Action] = value;
+						} else {
+							console.warn(`Ignoring invalid keyBind: ${key} -> ${value}`);
+						}
+					}
+				}
+			} catch (e) {
+				console.warn('Invalid KeyBinds in localStorage, using defaults');
+			}
+		}
+
+		if (storedScrollBinds) {
+			try {
+				const parsed = JSON.parse(storedScrollBinds);
+				if (typeof parsed === 'object' && parsed !== null) {
+					for (const [key, value] of Object.entries(parsed)) {
+						if (
+							['up', 'down'].includes(key) &&
+							typeof value === 'string' &&
+							['forward', 'backward', 'left', 'right', 'jump'].includes(value)
+						) {
+							this.scrollBinds[key as ScrollDirection] = value as Action;
+						} else {
+							console.warn(`Ignoring invalid scrollBind: ${key} -> ${value}`);
+						}
+					}
+				}
+			} catch (e) {
+				console.warn('Invalid ScrollBinds in localStorage, using defaults');
+			}
+		}
+	}
+
 	private getActionFromKey(key: string): Action | undefined {
 		return (Object.keys(this.keyBinds) as Action[]).find(
 			(action) => this.keyBinds[action] === key
@@ -49,7 +99,7 @@ export class InputService {
 	}
 
 	pressKey(key: string) {
-		// remove double key binds
+		// remove double key binds and set bind
 		if (this.rebindingKey) {
 			Object.keys(this.keyBinds).forEach((action) => {
 				if (this.keyBinds[action as Action] === key) {
@@ -58,6 +108,8 @@ export class InputService {
 			});
 			this.keyBinds[this.rebindingKey] = key;
 			this.rebindingKey = undefined;
+
+			localStorage.setItem('KeyBinds', JSON.stringify(this.keyBinds));
 		} else {
 			const action = this.getActionFromKey(key);
 			if (!action) return;

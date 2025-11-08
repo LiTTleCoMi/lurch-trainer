@@ -9,8 +9,7 @@ import { Action, ScrollDirection } from '../../../interfaces/binds.interface';
 	styleUrl: './keybinds.scss',
 })
 export class Keybinds {
-	private inputService = inject(InputService);
-	protected rebindingScroll?: ScrollDirection;
+	protected inputService = inject(InputService);
 
 	protected listenMode(event: Event, action: Action) {
 		setTimeout(() => (event.target as HTMLElement).blur());
@@ -21,23 +20,15 @@ export class Keybinds {
 		return action === this.inputService.rebindingKey;
 	}
 
-	protected rebindScroll(action: Action) {
-		if (!this.rebindingScroll) return;
-		this.inputService.scrollBinds[this.rebindingScroll] = action;
-		this.rebindingScroll = undefined;
-
-		localStorage.setItem('ScrollBinds', JSON.stringify(this.inputService.scrollBinds));
-	}
-
-	protected rebindScrollDirection(direction: ScrollDirection) {
-		if (this.rebindingScroll) {
-			this.rebindingScroll = undefined;
+	protected requestScrollRebind(direction: ScrollDirection) {
+		if (this.inputService.rebindingScroll === direction) {
+			this.inputService.rebindingScroll = undefined;
 		} else {
-			this.rebindingScroll = direction;
+			this.inputService.rebindingScroll = direction;
 		}
 	}
 
 	protected rebindingScrollDirection(direction: ScrollDirection): boolean {
-		return this.rebindingScroll === direction;
+		return this.inputService.rebindingScroll === direction;
 	}
 }

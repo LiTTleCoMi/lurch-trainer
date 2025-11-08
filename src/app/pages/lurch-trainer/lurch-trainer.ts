@@ -4,6 +4,7 @@ import { StrafeInterface } from '../../interfaces/strafes.interface';
 import { StrafesService } from '../../services/strafes.service';
 import { Popup } from '../../components/popup/popup';
 import { PopupPages } from '../../interfaces/popup-pages.interface';
+import { InputService } from '../../services/input.service';
 
 @Component({
 	selector: 'app-lurch-trainer',
@@ -13,6 +14,7 @@ import { PopupPages } from '../../interfaces/popup-pages.interface';
 })
 export class LurchTrainer implements OnInit {
 	private strafesService = inject(StrafesService);
+	private inputService = inject(InputService);
 	strafes: StrafeInterface = [];
 	training = false;
 	protected popupVisible = false;
@@ -40,5 +42,7 @@ export class LurchTrainer implements OnInit {
 	hidePopup() {
 		this.popupVisible = false;
 		this.popupPage = '';
+		this.inputService.rebindingKey = undefined;
+		this.inputService.rebindingScroll = undefined;
 	}
 }

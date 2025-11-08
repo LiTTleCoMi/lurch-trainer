@@ -169,4 +169,13 @@ export class InputService {
 			}, this.scrollBuffer);
 		}
 	}
+
+	rebindingScroll?: ScrollDirection;
+	rebindScroll(action: Action) {
+		if (!this.rebindingScroll) return;
+		this.scrollBinds[this.rebindingScroll] = action;
+		this.rebindingScroll = undefined;
+
+		localStorage.setItem('ScrollBinds', JSON.stringify(this.scrollBinds));
+	}
 }

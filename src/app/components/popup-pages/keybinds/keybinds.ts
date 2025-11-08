@@ -25,12 +25,16 @@ export class Keybinds {
 		if (!this.rebindingScroll) return;
 		this.inputService.scrollBinds[this.rebindingScroll] = action;
 		this.rebindingScroll = undefined;
-		
+
 		localStorage.setItem('ScrollBinds', JSON.stringify(this.inputService.scrollBinds));
 	}
 
 	protected rebindScrollDirection(direction: ScrollDirection) {
-		this.rebindingScroll = direction;
+		if (this.rebindingScroll) {
+			this.rebindingScroll = undefined;
+		} else {
+			this.rebindingScroll = direction;
+		}
 	}
 
 	protected rebindingScrollDirection(direction: ScrollDirection): boolean {

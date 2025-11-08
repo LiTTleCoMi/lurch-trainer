@@ -55,7 +55,7 @@ export class InputService {
 				if (this.keyBinds[action as Action] === key) {
 					this.keyBinds[action as Action] = '';
 				}
-			})
+			});
 			this.keyBinds[this.rebindingKey] = key;
 			this.rebindingKey = undefined;
 		} else {

@@ -1,13 +1,10 @@
 import { BoundAction } from './binds.interface';
 
-export interface StrafeDirections {
-	direction1: BoundAction[][];
-	direction2: BoundAction[][];
-}
+export type StrafeInputs = BoundAction[][];
 
 export interface StrafeItem {
 	name: string;
-	directions: StrafeDirections;
+	directions: StrafeInputs[];
 }
 
 export type StrafeInterface = StrafeItem[];

@@ -8,8 +8,8 @@ export class StrafesService {
 	strafes: StrafeInterface = [
 		{
 			name: 'Forward Pito',
-			directions: {
-				direction1: [
+			directions: [
+				[
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -28,7 +28,7 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-				direction2: [
+				[
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -47,12 +47,12 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-			},
+			],
 		},
 		{
 			name: 'Forward RAS',
-			directions: {
-				direction1: [
+			directions: [
+				[
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -76,7 +76,7 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-				direction2: [
+				[
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -100,12 +100,12 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-			},
+			],
 		},
 		{
 			name: 'Backward RAS',
-			directions: {
-				direction1: [
+			directions: [
+				[
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -129,7 +129,7 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-				direction2: [
+				[
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -153,12 +153,12 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-			},
+			],
 		},
 		{
 			name: 'Neo (CCW)',
-			directions: {
-				direction1: [
+			directions: [
+				[
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -182,7 +182,7 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-				direction2: [
+				[
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -206,12 +206,12 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-			},
+			],
 		},
 		{
 			name: 'Neo (CW)',
-			directions: {
-				direction1: [
+			directions: [
+				[
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -235,7 +235,7 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-				direction2: [
+				[
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'jump', useScroll: false },
@@ -259,7 +259,81 @@ export class StrafesService {
 						{ action: 'forward', useScroll: true },
 					],
 				],
-			},
+			],
+		},
+		{
+			name: 'Backwards Yuki (CW)',
+			directions: [
+				[
+					[],
+					[{ action: 'jump', useScroll: false }],
+					[{ action: 'backward', useScroll: false }],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+				],
+			],
+		},
+		{
+			name: 'Backwards Yuki (CCW)',
+			directions: [
+				[
+					[],
+					[{ action: 'jump', useScroll: false }],
+					[{ action: 'backward', useScroll: false }],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+				],
+			],
 		},
 	];
 

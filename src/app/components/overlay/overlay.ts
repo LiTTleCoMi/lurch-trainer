@@ -1,7 +1,7 @@
 import { Component, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { InputService } from '../../services/input.service';
 import { StrafesService } from '../../services/strafes.service';
-import { StrafeDirections, StrafeItem } from '../../interfaces/strafes.interface';
+import { StrafeInputs, StrafeItem } from '../../interfaces/strafes.interface';
 import { Action, BoundAction, ScrollDirection } from '../../interfaces/binds.interface';
 import { UpperCasePipe } from '@angular/common';
 
@@ -19,8 +19,8 @@ export class Overlay implements OnInit, OnChanges {
 	readonly training = input.required<boolean>();
 
 	private selectedStrafe?: StrafeItem;
-	private currentDirectionNum = 1;
-	private currentDirection: StrafeDirections['direction1'] = [];
+	private currentDirectionIndex = 0;
+	private currentDirection: StrafeInputs = [];
 	private currentStepIndex = 0;
 
 	private currentStep = new Set<BoundAction>();
@@ -50,13 +50,16 @@ export class Overlay implements OnInit, OnChanges {
 		}
 
 		this.selectedStrafe = this.strafesService.selectedStrafe;
-		this.currentDirectionNum = 1;
-		this.currentDirection = this.selectedStrafe.directions.direction1;
+		this.currentDirectionIndex = 0;
+		this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
 		this.currentStepIndex = 0;
 
 		this.currentStep.clear();
 		this.nextStep = new Set(this.currentDirection[this.currentStepIndex]);
 		this.updateStepDifferences();
+		if (this.isStepMatched()) {
+			this.advanceStep();
+		}
 	}
 
 	private updateActivatedActions(actions: Set<BoundAction>) {
@@ -123,13 +126,12 @@ export class Overlay implements OnInit, OnChanges {
 
 	private switchDirections() {
 		if (!this.selectedStrafe) return;
-
-		if (this.currentDirectionNum === 1) {
-			this.currentDirectionNum = 2;
-			this.currentDirection = this.selectedStrafe.directions.direction2;
+		this.currentDirectionIndex++;
+		if (this.selectedStrafe.directions[this.currentDirectionIndex]) {
+			this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
 		} else {
-			this.currentDirectionNum = 1;
-			this.currentDirection = this.selectedStrafe.directions.direction1;
+			this.currentDirectionIndex = 0;
+			this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
 		}
 
 		this.currentStepIndex = 0;

@@ -8,7 +8,7 @@
 			class="key"
 			id="w"
 		>
-			{{ inputService.keyBinds.forward | uppercase}}
+			{{ inputService.keyBinds.forward | uppercase }}
 		</div>
 		<div
 			[class.pressed]="isActivated({ action: 'left', useScroll: false })"
@@ -28,7 +28,7 @@
 			class="key"
 			id="s"
 		>
-			{{ inputService.keyBinds.backward | uppercase}}
+			{{ inputService.keyBinds.backward | uppercase }}
 		</div>
 		<div
 			[class.pressed]="isActivated({ action: 'right', useScroll: false })"
@@ -38,7 +38,7 @@
 			class="key"
 			id="d"
 		>
-			{{ inputService.keyBinds.right | uppercase}}
+			{{ inputService.keyBinds.right | uppercase }}
 		</div>
 		<div
 			[class.pressed]="isActivated({ action: 'jump', useScroll: false })"
@@ -48,14 +48,17 @@
 			class="key"
 			id="space"
 		>
-			{{ (inputService.keyBinds.jump === ' ' ? 'space' : inputService.keyBinds.jump) | uppercase}}
+			{{
+				(inputService.keyBinds.jump === ' ' ? 'space' : inputService.keyBinds.jump)
+					| uppercase
+			}}
 		</div>
 	</div>
 	<div class="mouse">
 		<div class="wheel">
 			<div
 				[class.pressed]="
-					isActivated({ action: inputService.scrollBinds.up, useScroll: true })
+					isScrolling('up')
 				"
 				[class.press]="
 					shouldActivate({ action: inputService.scrollBinds.up, useScroll: true })
@@ -69,12 +72,10 @@
 				class="wheel-up"
 			>
 				<span class="material-symbols-outlined"> arrow_drop_up </span>
-				<span class="scroll-count">{{ scrollUpCount }}</span>
+				<span class="scroll-count">{{ inputService.scrollUpCount }}</span>
 			</div>
 			<div
-				[class.pressed]="
-					isActivated({ action: inputService.scrollBinds.down, useScroll: true })
-				"
+				[class.pressed]="isScrolling('down')"
 				[class.press]="
 					shouldActivate({ action: inputService.scrollBinds.down, useScroll: true })
 				"
@@ -90,7 +91,7 @@
 				class="wheel-down"
 			>
 				<span class="material-symbols-outlined"> arrow_drop_down </span>
-				<span class="scroll-count">{{ scrollDownCount }}</span>
+				<span class="scroll-count">{{ inputService.scrollDownCount }}</span>
 			</div>
 		</div>
 	</div>

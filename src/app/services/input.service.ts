@@ -49,8 +49,14 @@ export class InputService {
 	}
 
 	pressKey(key: string) {
+		// remove double key binds
 		if (this.rebindingKey) {
-			this.keyBinds[this.rebindingKey!] = key;
+			Object.keys(this.keyBinds).forEach((action) => {
+				if (this.keyBinds[action as Action] === key) {
+					this.keyBinds[action as Action] = '';
+				}
+			})
+			this.keyBinds[this.rebindingKey] = key;
 			this.rebindingKey = undefined;
 		} else {
 			const action = this.getActionFromKey(key);
@@ -81,5 +87,34 @@ export class InputService {
 		this._activatedActions.next(new Set(this.activeActions));
 		this.removeAction(bound);
 		this._activatedActions.next(new Set(this.activeActions));
+		this.updateScrollBuffer(direction);
+	}
+
+	scrollUpCount = 0;
+	scrollDownCount = 0;
+	scrollingUp = false;
+	scrollingDown = false;
+	private stopScrollingUp = setTimeout(() => {});
+	private stopScrollingDown = setTimeout(() => {});
+	private scrollBuffer = 70;
+
+	updateScrollBuffer(direction: ScrollDirection) {
+		if (direction === 'up') {
+			clearTimeout(this.stopScrollingUp);
+			this.scrollingUp = true;
+			this.scrollUpCount++;
+			this.stopScrollingUp = setTimeout(() => {
+				this.scrollingUp = false;
+				this.scrollUpCount = 0;
+			}, this.scrollBuffer);
+		} else {
+			clearTimeout(this.stopScrollingDown);
+			this.scrollingDown = true;
+			this.scrollDownCount++;
+			this.stopScrollingDown = setTimeout(() => {
+				this.scrollingDown = false;
+				this.scrollDownCount = 0;
+			}, this.scrollBuffer);
+		}
 	}
 }

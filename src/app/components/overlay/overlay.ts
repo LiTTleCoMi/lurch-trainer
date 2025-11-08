@@ -2,7 +2,7 @@ import { Component, inject, input, OnChanges, OnInit, SimpleChanges } from '@ang
 import { InputService } from '../../services/input.service';
 import { StrafesService } from '../../services/strafes.service';
 import { StrafeDirections, StrafeItem } from '../../interfaces/strafes.interface';
-import { Action, BoundAction } from '../../interfaces/binds.interface';
+import { Action, BoundAction, ScrollDirection } from '../../interfaces/binds.interface';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -66,41 +66,9 @@ export class Overlay implements OnInit, OnChanges {
 
 	private onActivatedActionsChange() {
 		console.log(this.activatedActions);
-		this.updateScrollBuffer();
 		if (!this.training()) return;
 		if (this.isStepMatched()) {
 			this.advanceStep();
-		}
-	}
-
-	protected scrollUpCount = 0;
-	protected scrollDownCount = 0;
-	private scrollingUp = false;
-	private scrollingDown = false;
-	private stopScrollingUp = setTimeout(() => {});
-	private stopScrollingDown = setTimeout(() => {});
-	private scrollBuffer = 70;
-
-	private updateScrollBuffer() {
-		for (const a of this.activatedActions) {
-			if (!a.useScroll) continue;
-			if (a.action === this.inputService.scrollBinds.up) {
-				clearTimeout(this.stopScrollingUp);
-				this.scrollingUp = true;
-				this.scrollUpCount++;
-				this.stopScrollingUp = setTimeout(() => {
-					this.scrollingUp = false;
-					this.scrollUpCount = 0;
-				}, this.scrollBuffer);
-			} else if (a.action === this.inputService.scrollBinds.down) {
-				clearTimeout(this.stopScrollingDown);
-				this.scrollingDown = true;
-				this.scrollDownCount++;
-				this.stopScrollingDown = setTimeout(() => {
-					this.scrollingDown = false;
-					this.scrollDownCount = 0;
-				}, this.scrollBuffer);
-			}
 		}
 	}
 
@@ -114,11 +82,7 @@ export class Overlay implements OnInit, OnChanges {
 		// --- Compare everything except jump ---
 		const allNonJumpMatch =
 			activatedNoJump.length === nextNoJump.length &&
-			nextNoJump.every((next) =>
-				activatedNoJump.some(
-					(a) => a.action === next.action && a.useScroll === next.useScroll
-				)
-			);
+			nextNoJump.every((next) => activatedNoJump.some((a) => a.action === next.action));
 
 		// If all non-jump actions match, consider it matched
 		if (allNonJumpMatch) return true;
@@ -230,12 +194,16 @@ export class Overlay implements OnInit, OnChanges {
 	}
 
 	protected isActivated(action: BoundAction): boolean {
-		if (action.useScroll) {
-			if (action.action === this.inputService.scrollBinds.up) return this.scrollingUp;
-			if (action.action === this.inputService.scrollBinds.down) return this.scrollingDown;
-		}
 		return !!Array.from(this.activatedActions).some(
 			(a) => JSON.stringify(a) === JSON.stringify(action)
 		);
+	}
+
+	protected isScrolling(direction: ScrollDirection): boolean {
+		if (direction === 'up') {
+			return this.inputService.scrollingUp;
+		} else {
+			return this.inputService.scrollingDown;
+		}
 	}
 }

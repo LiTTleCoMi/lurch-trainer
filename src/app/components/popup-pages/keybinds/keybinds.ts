@@ -24,7 +24,6 @@ export class Keybinds {
 	protected rebindScroll(action: Action) {
 		if (!this.rebindingScroll) return;
 		this.inputService.scrollBinds[this.rebindingScroll] = action;
-		console.log(this.inputService.scrollBinds[this.rebindingScroll]);
 		this.rebindingScroll = undefined;
 	}
 

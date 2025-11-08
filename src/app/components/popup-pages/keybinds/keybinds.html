@@ -1,1 +1,66 @@
-<p>keybinds works!</p>
+<div class="overlay">
+	<div class="keyboard">
+		<button
+			[class.listening]="actionIsListening('forward')"
+			(click)="listenMode($event, 'forward')"
+			class="key"
+			id="w"
+		>
+			<span class="material-symbols-outlined"> keyboard_arrow_up </span>
+		</button>
+		<button
+			[class.listening]="actionIsListening('left')"
+			(click)="listenMode($event, 'left')"
+			class="key"
+			id="a"
+		>
+			<span class="material-symbols-outlined"> keyboard_arrow_left </span>
+		</button>
+		<button
+			[class.listening]="actionIsListening('backward')"
+			(click)="listenMode($event, 'backward')"
+			class="key"
+			id="s"
+		>
+			<span class="material-symbols-outlined"> keyboard_arrow_down </span>
+		</button>
+		<button
+			[class.listening]="actionIsListening('right')"
+			(click)="listenMode($event, 'right')"
+			class="key"
+			id="d"
+		>
+			<span class="material-symbols-outlined"> keyboard_arrow_right </span>
+		</button>
+		<button
+			[class.listening]="actionIsListening('jump')"
+			(click)="listenMode($event, 'jump')"
+			class="key"
+			id="space"
+		>
+			Jump
+		</button>
+	</div>
+	<div class="mouse">
+		<div class="wheel">
+			<button (click)="rebindScrollDirection('up')" [class.selected]="rebindingScrollDirection('up')">
+				<span class="material-symbols-outlined"> arrow_drop_up </span>
+			</button>
+			<button (click)="rebindScrollDirection('down')" [class.selected]="rebindingScrollDirection('down')">
+				<span class="material-symbols-outlined"> arrow_drop_down </span>
+			</button>
+		</div>
+	</div>
+
+	<div [class.visible]="rebindingScroll" class="action-selector">
+		<h3>Select an Action</h3>
+		<hr />
+		<div class="action-list">
+			<button (click)="rebindScroll('forward')">Forward</button>
+			<button (click)="rebindScroll('backward')">Backward</button>
+			<button (click)="rebindScroll('left')">Left</button>
+			<button (click)="rebindScroll('right')">Right</button>
+			<button (click)="rebindScroll('jump')">Jump</button>
+		</div>
+	</div>
+</div>

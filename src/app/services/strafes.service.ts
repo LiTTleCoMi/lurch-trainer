@@ -10,7 +10,10 @@ export class StrafesService {
 			name: 'Forward RAS',
 			directions: {
 				direction1: [
-					[{ action: 'left', useScroll: false }],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'jump', useScroll: false },
+					],
 					[
 						{ action: 'left', useScroll: false },
 						{ action: 'forward', useScroll: false },
@@ -31,7 +34,10 @@ export class StrafesService {
 					],
 				],
 				direction2: [
-					[{ action: 'right', useScroll: false }],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'jump', useScroll: false },
+					],
 					[
 						{ action: 'right', useScroll: false },
 						{ action: 'forward', useScroll: false },

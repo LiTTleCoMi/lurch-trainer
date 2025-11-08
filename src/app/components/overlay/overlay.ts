@@ -3,10 +3,11 @@ import { InputService } from '../../services/input.service';
 import { StrafesService } from '../../services/strafes.service';
 import { StrafeDirections, StrafeItem } from '../../interfaces/strafes.interface';
 import { Action, BoundAction } from '../../interfaces/binds.interface';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
 	selector: 'app-overlay',
-	imports: [],
+	imports: [UpperCasePipe],
 	templateUrl: './overlay.html',
 	styleUrl: './overlay.scss',
 })
@@ -105,15 +106,43 @@ export class Overlay implements OnInit, OnChanges {
 
 	private isStepMatched(): boolean {
 		const nextActions = Array.from(this.nextStep);
-		if (this.activatedActions.size !== nextActions.length) return false;
 
-		for (const next of nextActions) {
-			if (![...this.activatedActions].some((a) => a.action === next.action)) {
-				return false;
-			}
-		}
-		return true;
+		// Filter out "jump" from both sets for comparison
+		const activatedNoJump = [...this.activatedActions].filter((a) => a.action !== 'jump');
+		const nextNoJump = nextActions.filter((a) => a.action !== 'jump');
+
+		// --- Compare everything except jump ---
+		const allNonJumpMatch =
+			activatedNoJump.length === nextNoJump.length &&
+			nextNoJump.every((next) =>
+				activatedNoJump.some(
+					(a) => a.action === next.action && a.useScroll === next.useScroll
+				)
+			);
+
+		// If all non-jump actions match, consider it matched
+		if (allNonJumpMatch) return true;
+
+		return false;
 	}
+	// Ignore jump if it’s the only mismatch
+	// private isStepMatched(): boolean {
+	// 	const nextActions = Array.from(this.nextStep);
+	// 	const activatedActions = Array.from(this.activatedActions);
+
+	// 	let mismatches = nextActions.filter(
+	// 		(next) =>
+	// 			!activatedActions.some(
+	// 				(a) => a.action === next.action && a.useScroll === next.useScroll
+	// 			)
+	// 	);
+
+	// 	if (mismatches.length === 1 && mismatches[0].action === 'jump') {
+	// 		mismatches = [];
+	// 	}
+
+	// 	return mismatches.length === 0;
+	// }
 
 	private advanceStep() {
 		this.currentStep = new Set(this.nextStep);
@@ -155,7 +184,10 @@ export class Overlay implements OnInit, OnChanges {
 		);
 		this.shouldBeReleased = new Set(
 			[...this.currentStep].filter(
-				(cur) => ![...this.nextStep].some((next) => next.action === cur.action && next.useScroll === cur.useScroll)
+				(cur) =>
+					![...this.nextStep].some(
+						(next) => next.action === cur.action && next.useScroll === cur.useScroll
+					)
 			)
 		);
 	}
@@ -176,9 +208,15 @@ export class Overlay implements OnInit, OnChanges {
 	protected shouldActivate(action: BoundAction): boolean {
 		return (
 			this.training() &&
-			[...this.shouldBePressed].some(
-				(a) => a.action === action.action && a.useScroll === action.useScroll
-			)
+			[...this.shouldBePressed].some((a) => {
+				if (a.action === action.action) {
+					if (a.action === 'jump') {
+						return true;
+					}
+					return a.useScroll === action.useScroll;
+				}
+				return false;
+			})
 		);
 	}
 
@@ -196,7 +234,7 @@ export class Overlay implements OnInit, OnChanges {
 			if (action.action === this.inputService.scrollBinds.up) return this.scrollingUp;
 			if (action.action === this.inputService.scrollBinds.down) return this.scrollingDown;
 		}
-		return !!Array.from(this.activatedActions).find(
+		return !!Array.from(this.activatedActions).some(
 			(a) => JSON.stringify(a) === JSON.stringify(action)
 		);
 	}

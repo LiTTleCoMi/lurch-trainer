@@ -8,6 +8,7 @@ import { Action, BoundAction, ScrollDirection } from '../interfaces/binds.interf
 export class InputService {
 	private _activatedActions = new BehaviorSubject<Set<BoundAction>>(new Set());
 	activatedActions$ = this._activatedActions.asObservable();
+	rebindingKey?: Action;
 
 	private activeActions = new Set<BoundAction>();
 
@@ -18,7 +19,6 @@ export class InputService {
 		right: 'd',
 		jump: ' ',
 	};
-
 	scrollBinds: Record<ScrollDirection, Action> = {
 		up: 'forward',
 		down: 'jump',
@@ -49,13 +49,18 @@ export class InputService {
 	}
 
 	pressKey(key: string) {
-		const action = this.getActionFromKey(key);
-		if (!action) return;
-		const bound = this.getBoundAction(action, false);
-		if (this.hasAction(bound)) return;
+		if (this.rebindingKey) {
+			this.keyBinds[this.rebindingKey!] = key;
+			this.rebindingKey = undefined;
+		} else {
+			const action = this.getActionFromKey(key);
+			if (!action) return;
+			const bound = this.getBoundAction(action, false);
+			if (this.hasAction(bound)) return;
 
-		this.activeActions.add(bound);
-		this._activatedActions.next(new Set(this.activeActions));
+			this.activeActions.add(bound);
+			this._activatedActions.next(new Set(this.activeActions));
+		}
 	}
 
 	releaseKey(key: string) {

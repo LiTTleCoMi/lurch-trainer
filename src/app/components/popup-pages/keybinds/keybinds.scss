@@ -1,0 +1,123 @@
+@use 'colors';
+$key-size: 70px;
+
+:host {
+	flex: 1;
+}
+
+.overlay {
+	display: flex;
+	height: 100%;
+	gap: 20px;
+
+	.keyboard {
+		display: grid;
+		grid-template-columns: repeat(3, $key-size);
+		grid-template-rows: repeat(2, $key-size) calc($key-size * 2 / 3);
+		gap: 3px;
+
+		.key {
+			border: 1px solid colors.$primary-light-gray;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: colors.$primary-dark-gray;
+			color: colors.$primary-light-gray;
+			font-size: 1.2rem;
+			user-select: none;
+
+			&.listening {
+				background-color: colors.$primary-light-gray;
+				color: colors.$primary-dark-gray;
+			}
+
+			/* Layout positions */
+			&#w {
+				grid-column: 2;
+				grid-row: 1;
+			}
+			&#a {
+				grid-column: 1;
+				grid-row: 2;
+			}
+			&#s {
+				grid-column: 2;
+				grid-row: 2;
+			}
+			&#d {
+				grid-column: 3;
+				grid-row: 2;
+			}
+			&#space {
+				grid-column: 1 / 4;
+				grid-row: 3;
+			}
+		}
+	}
+	.mouse {
+		.wheel {
+			display: flex;
+			flex-direction: column;
+			height: $key-size * 1.5;
+			width: calc($key-size / 1.5);
+			gap: 2px;
+
+			> * {
+				border: 1px solid colors.$primary-light-gray;
+				border-radius: 5px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: colors.$primary-light-gray;
+				flex: 1;
+				background-color: colors.$primary-dark-gray;
+
+				&.selected {
+					background-color: colors.$primary-light-gray;
+					color: colors.$primary-dark-gray;
+				}
+			}
+		}
+	}
+
+	.action-selector {
+		position: relative;
+		height: fit-content;
+		background-color: colors.$primary-dark-gray;
+		display: none;
+		flex-direction: column;
+		border: 1px solid colors.$primary-light-gray;
+		border-radius: 20px;
+		padding: 20px;
+		gap: 15px;
+		text-align: center;
+
+		h3 {
+			font-size: 20px;
+			margin: 0;
+		}
+
+		&.visible {
+			display: flex;
+		}
+
+		.action-list {
+			display: flex;
+			flex-direction: column;
+
+			button {
+				border-radius: 10px;
+				background-color: transparent;
+				color: colors.$primary-light-gray;
+				border: none;
+				padding: 5px 10px;
+				font-size: 1.2rem;
+
+				&:hover {
+					background-color: rgba(255, 255, 255, 0.2);
+				}
+			}
+		}
+	}
+}

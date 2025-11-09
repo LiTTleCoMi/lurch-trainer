@@ -32,7 +32,7 @@ export class TrainerManagerService {
 	private currentDirectionIndex = 0;
 	private activatedActions: BoundAction[] = [];
 	private currentStep: BoundAction[] = [];
-	private currentStepIndex = 0;
+	private nextStepIndex = 0;
 	private nextStep: BoundAction[] = [];
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
@@ -48,7 +48,7 @@ export class TrainerManagerService {
 		this.currentDirection = this.selectedStrafe.directions[0];
 		this.currentDirectionIndex = 0;
 		this.currentStep = [];
-		this.currentStepIndex = 0;
+		this.nextStepIndex = 0;
 		this.nextStep = this.currentDirection[0];
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
@@ -68,9 +68,7 @@ export class TrainerManagerService {
 	}
 
 	private isStepMatched(): boolean {
-		const activatedNoJump = this.activatedActions.filter((a) => a.action !== 'jump');
-		const nextNoJump = this.nextStep.filter((a) => a.action !== 'jump');
-		if (activatedNoJump.length !== nextNoJump.length) return false;
+		if (this.activatedActions.length !== this.nextStep.length) return false;
 
 		return this.nextStep.every((nextAction) =>
 			this.activatedActions.some((action) => this.actionsEqual(action, nextAction))
@@ -79,9 +77,9 @@ export class TrainerManagerService {
 
 	private advanceStep() {
 		this.currentStep = this.nextStep;
-		this.currentStepIndex++;
-		if (this.currentDirection[this.currentStepIndex]) {
-			this.nextStep = this.currentDirection[this.currentStepIndex];
+		this.nextStepIndex++;
+		if (this.currentDirection[this.nextStepIndex]) {
+			this.nextStep = this.currentDirection[this.nextStepIndex];
 		} else {
 			this.changeDirection();
 		}
@@ -89,13 +87,13 @@ export class TrainerManagerService {
 	}
 
 	private changeDirection() {
-		if (!this.selectedStrafe) return;
-		this.currentStepIndex = 0;
 		this.currentDirectionIndex++;
 		if (!this.selectedStrafe.directions[this.currentDirectionIndex]) {
 			this.currentDirectionIndex = 0;
 		}
 		this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
+		this.nextStepIndex = 0;
+		this.nextStep = this.currentDirection[0];
 	}
 
 	private updateStepDifferences() {
@@ -115,6 +113,9 @@ export class TrainerManagerService {
 			nextStep: this.nextStep,
 			currentStep: this.currentStep,
 		});
+		for (const action of this.nextStep) {
+			if (action.action === 'jump') console.log("Jump")
+		}
 	}
 
 	private actionsEqual(

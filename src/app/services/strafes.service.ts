@@ -336,13 +336,4 @@ export class StrafesService {
 			],
 		},
 	];
-
-	selectedStrafe: StrafeItem = this.strafes[0];
-
-	updateSelectedStrafe(strafeName: string) {
-		const strafe = this.strafes.filter((strafe) => strafe.name == strafeName);
-		if (!strafe || strafe.length == 0) return;
-		this.selectedStrafe = strafe[0];
-		console.log(this.selectedStrafe.name);
-	}
 }

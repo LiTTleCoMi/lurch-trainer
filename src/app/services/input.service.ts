@@ -6,11 +6,11 @@ import { Action, BoundAction, ScrollDirection } from '../interfaces/binds.interf
 	providedIn: 'root',
 })
 export class InputService {
-	private _activatedActions = new BehaviorSubject<Set<BoundAction>>(new Set());
+	private _activatedActions = new BehaviorSubject<BoundAction[]>([]);
 	activatedActions$ = this._activatedActions.asObservable();
 	rebindingKey?: Action;
 
-	private activeActions = new Set<BoundAction>();
+	private activeActions: BoundAction[] = [];
 
 	keyBinds: Record<Action, string> = {
 		forward: 'w',
@@ -91,10 +91,8 @@ export class InputService {
 	}
 
 	private removeAction(action: BoundAction) {
-		this.activeActions = new Set(
-			[...this.activeActions].filter(
-				(a) => !(a.action === action.action && a.useScroll === action.useScroll)
-			)
+		this.activeActions = [...this.activeActions].filter(
+			(a) => !(a.action === action.action && a.useScroll === action.useScroll)
 		);
 	}
 
@@ -116,8 +114,8 @@ export class InputService {
 			const bound = this.getBoundAction(action, false);
 			if (this.hasAction(bound)) return;
 
-			this.activeActions.add(bound);
-			this._activatedActions.next(new Set(this.activeActions));
+			this.activeActions.push(bound);
+			this._activatedActions.next(this.activeActions);
 		}
 	}
 
@@ -127,7 +125,7 @@ export class InputService {
 
 		const bound = this.getBoundAction(action, false);
 		this.removeAction(bound);
-		this._activatedActions.next(new Set(this.activeActions));
+		this._activatedActions.next(this.activeActions);
 	}
 
 	scroll(direction: ScrollDirection) {
@@ -135,10 +133,10 @@ export class InputService {
 		if (!action) return;
 
 		const bound = this.getBoundAction(action, true);
-		this.activeActions.add(bound);
-		this._activatedActions.next(new Set(this.activeActions));
+		this.activeActions.push(bound);
+		this._activatedActions.next(this.activeActions);
 		this.removeAction(bound);
-		this._activatedActions.next(new Set(this.activeActions));
+		this._activatedActions.next(this.activeActions);
 		this.updateScrollBuffer(direction);
 	}
 

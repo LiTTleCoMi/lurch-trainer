@@ -19,14 +19,14 @@
 				}
 			</select>
 			<button
-				[class]="training ? 'stop' : 'start'"
+				[class]="trainerManagerService.training ? 'stop' : 'start'"
 				class="toggle-training"
 				(click)="toggleTraining($event)"
 			>
-				{{ training ? 'Stop' : 'Start' }}
+				{{ trainerManagerService.training ? 'Stop' : 'Start' }}
 			</button>
 		</div>
 	</div>
-	<app-overlay [training]="training" />
+	<app-overlay />
 	<app-popup [visible]="popupVisible" (close)="hidePopup()" [page]="popupPage"></app-popup>
 </div>

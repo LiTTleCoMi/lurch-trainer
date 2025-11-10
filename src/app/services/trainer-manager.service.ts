@@ -13,6 +13,7 @@ export interface TrainerState {
 interface Settings {
 	jumpMethod: Input;
 	useJumps: boolean;
+	useScroll: boolean;
 }
 
 @Injectable({
@@ -44,6 +45,7 @@ export class TrainerManagerService {
 	settings: Settings = {
 		jumpMethod: Input.Scroll,
 		useJumps: false,
+		useScroll: false,
 	};
 
 	constructor() {
@@ -160,6 +162,9 @@ export class TrainerManagerService {
 			});
 		} else {
 			this.nextStep = this.nextStep.filter((action) => action.action !== 'jump');
+		}
+		if (!this.settings.useScroll) {
+			this.nextStep = this.nextStep.filter((action) => !action.useScroll || action.action === 'jump');
 		}
 	}
 

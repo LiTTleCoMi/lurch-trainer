@@ -50,6 +50,34 @@ export class TrainerManagerService {
 		this.inputService.activatedActions$.subscribe({
 			next: (actions) => this.updateActivatedActions(actions),
 		});
+		this.loadSettings();
+	}
+
+	private loadSettings() {
+		const storedSettings = localStorage.getItem('Settings');
+		if (!storedSettings) return;
+
+		try {
+			const parsed = JSON.parse(storedSettings);
+
+			// Type guard to validate structure
+			if (this.isValidSettings(parsed)) {
+				this.settings = parsed;
+			} else {
+				console.warn('Invalid settings structure — using defaults');
+			}
+		} catch (e) {
+			console.warn('Failed to parse settings JSON — using defaults');
+		}
+	}
+	/** Helper type guard */
+	private isValidSettings(value: any): value is Settings {
+		if (typeof value !== 'object' || value === null) return false;
+
+		const validJumpMethods = Object.values(Input);
+		const { jumpMethod, useJumps } = value;
+
+		return validJumpMethods.includes(jumpMethod) && typeof useJumps === 'boolean';
 	}
 
 	private startTraining() {
@@ -77,10 +105,17 @@ export class TrainerManagerService {
 	}
 
 	private isStepMatched(): boolean {
-		if (this.activatedActions.length !== this.nextStep.length) return false;
+		const noJumpActivatedActions = this.activatedActions.filter(
+			(action) => action.action !== 'jump'
+		);
+		if (
+			this.activatedActions.length !== this.nextStep.length &&
+			noJumpActivatedActions.length !== this.nextStep.length
+		)
+			return false;
 
 		return this.nextStep.every((nextAction) =>
-			this.activatedActions.some((action) => this.actionsEqual(action, nextAction))
+			this.activatedActions.some((action) => this.actionsEqual(action, nextAction, true))
 		);
 	}
 

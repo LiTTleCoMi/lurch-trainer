@@ -48,7 +48,7 @@ export class InputService {
 					}
 				}
 			} catch (e) {
-				console.warn('Invalid KeyBinds in localStorage, using defaults');
+				console.warn('Invalid Keybinds in localStorage, using defaults');
 			}
 		}
 
@@ -64,12 +64,12 @@ export class InputService {
 						) {
 							this.scrollBinds[key as ScrollDirection] = value as Action;
 						} else {
-							console.warn(`Ignoring invalid scrollBind: ${key} -> ${value}`);
+							console.warn(`Ignoring invalid scroll bind: ${key} -> ${value}`);
 						}
 					}
 				}
 			} catch (e) {
-				console.warn('Invalid ScrollBinds in localStorage, using defaults');
+				console.warn('Invalid scroll binds in localStorage, using defaults');
 			}
 		}
 	}

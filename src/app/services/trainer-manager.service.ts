@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { StrafesService } from './strafes.service';
 import { InputService } from './input.service';
-import { BoundAction } from '../interfaces/binds.interface';
+import { BoundAction, Input } from '../interfaces/binds.interface';
 import { BehaviorSubject } from 'rxjs';
 
 export interface TrainerState {
@@ -9,6 +9,10 @@ export interface TrainerState {
 	shouldBeReleased: BoundAction[];
 	nextStep: BoundAction[];
 	currentStep: BoundAction[];
+}
+interface Settings {
+	jumpMethod: Input;
+	useJumps: boolean;
 }
 
 @Injectable({
@@ -37,6 +41,11 @@ export class TrainerManagerService {
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
 
+	settings: Settings = {
+		jumpMethod: Input.Scroll,
+		useJumps: false,
+	};
+
 	constructor() {
 		this.inputService.activatedActions$.subscribe({
 			next: (actions) => this.updateActivatedActions(actions),
@@ -49,7 +58,7 @@ export class TrainerManagerService {
 		this.currentDirectionIndex = 0;
 		this.currentStep = [];
 		this.nextStepIndex = 0;
-		this.nextStep = this.currentDirection[0];
+		this.updateNextStep();
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
 		this.updateStepDifferences();
@@ -93,7 +102,7 @@ export class TrainerManagerService {
 		}
 		this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
 		this.nextStepIndex = 0;
-		this.nextStep = this.currentDirection[0];
+		this.updateNextStep();
 	}
 
 	private updateStepDifferences() {
@@ -106,6 +115,19 @@ export class TrainerManagerService {
 		this.emitNextState();
 	}
 
+	private updateNextStep() {
+		this.nextStep = this.currentDirection[this.nextStepIndex];
+		if (this.settings.useJumps) {
+			this.nextStep.forEach((action) => {
+				if (action.action === 'jump') {
+					action.useScroll = this.settings.jumpMethod !== Input.Key;
+				}
+			});
+		} else {
+			this.nextStep = this.nextStep.filter((action) => action.action !== 'jump');
+		}
+	}
+
 	private emitNextState() {
 		this._state.next({
 			shouldBePressed: this.shouldBePressed,
@@ -113,9 +135,6 @@ export class TrainerManagerService {
 			nextStep: this.nextStep,
 			currentStep: this.currentStep,
 		});
-		for (const action of this.nextStep) {
-			if (action.action === 'jump') console.log("Jump")
-		}
 	}
 
 	private actionsEqual(

@@ -1,1 +1,1 @@
-export type PopupPages = '' | 'instructions' | 'keybinds'
+export type PopupPages = '' | 'instructions' | 'keybinds' | 'settings';

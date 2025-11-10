@@ -16,6 +16,7 @@ export class Popup {
 	pageNames: Record<PopupPages, string> = {
 		instructions: 'Instructions',
 		keybinds: 'Keybinds',
+		settings: 'Settings',
 		'': '',
 	};
 

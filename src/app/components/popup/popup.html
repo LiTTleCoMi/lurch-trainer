@@ -5,7 +5,8 @@
 		</button>
 		<h1>{{ pageNames[page()] }}</h1>
 		<hr />
-		<app-instructions [class.visible]="page() === 'instructions'" class="content"></app-instructions>
-		<app-keybinds [class.visible]="page() === 'keybinds'" class="content"></app-keybinds>
+		<app-instructions [class.visible]="pageVisible('instructions')" class="content"></app-instructions>
+		<app-keybinds [class.visible]="pageVisible('keybinds')" class="content"></app-keybinds>
+		<app-settings [class.visible]="pageVisible('settings')" class="content"></app-settings>
 	</div>
 </div>

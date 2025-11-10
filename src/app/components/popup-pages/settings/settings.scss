@@ -1,0 +1,91 @@
+@use 'colors';
+
+.settings-container {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	.setting {
+		display: flex;
+		flex-direction: column;
+		width: 40%;
+
+		.setting-label {
+			font-weight: 600;
+			font-size: 20px;
+			font-weight: 500;
+		}
+
+		.radio-group {
+			display: flex;
+			gap: 10px;
+			margin-top: 10px;
+
+			.radio-option {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+				font-size: 16px;
+				font-weight: 500;
+				padding: 6px 12px;
+				border: 2px solid colors.$primary-light-gray;
+				border-radius: 8px;
+				transition: 0.2s ease all;
+				user-select: none;
+
+				input[type='radio'] {
+					accent-color: colors.$primary-green;
+					width: 16px;
+					height: 16px;
+					margin: 0;
+				}
+
+				&:hover {
+					background-color: rgba(colors.$primary-green, 0.1);
+					border-color: colors.$primary-green;
+				}
+
+				&:has(input:checked) {
+					border-color: colors.$primary-green;
+					background-color: rgba(colors.$primary-green, 0.15);
+					color: colors.$primary-green;
+				}
+			}
+		}
+
+		.checkbox-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			cursor: pointer;
+			user-select: none;
+
+			.material-symbols-outlined {
+				font-size: 40px;
+			}
+			
+			.checkbox {
+				display: none;
+
+				&:checked ~ .material-symbols-outlined {
+					color: colors.$primary-green;
+				}
+			}
+		}
+
+		.description {
+			margin: 0;
+			font-size: 14px;
+		}
+	}
+}
+
+.save-button {
+	margin-top: 20px;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 5px;
+	font-size: 16px;
+	background-color: colors.$primary-green;
+}

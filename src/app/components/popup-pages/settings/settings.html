@@ -1,1 +1,36 @@
-<p>settings works!</p>
+<div class="settings-container">
+	<div class="setting">
+		<label class="setting-label">Jump Method</label>
+		<div class="radio-group">
+			<label class="radio-option">
+				<input
+					type="radio"
+					name="jumpMethod"
+					[value]="Input.Key"
+					[(ngModel)]="trainerManager.settings.jumpMethod"
+				/>
+				<span>Keyboard</span>
+			</label>
+
+			<label class="radio-option">
+				<input
+					type="radio"
+					name="jumpMethod"
+					[value]="Input.Scroll"
+					[(ngModel)]="trainerManager.settings.jumpMethod"
+				/>
+				<span>Scroll</span>
+			</label>
+		</div>
+	</div>
+
+	<div class="setting">
+		<label class="checkbox-container setting-label">
+			Jump Steps
+			<input class="checkbox" type="checkbox" [(ngModel)]="trainerManager.settings.useJumps" />
+			<span class="material-symbols-outlined">{{ trainerManager.settings.useJumps ? "toggle_on" : "toggle_off" }} </span>
+		</label>
+		<p class="description">Include jump steps in training</p>
+	</div>
+</div>
+<button class="save-button" (click)="saveSettings()">Save Changes</button>

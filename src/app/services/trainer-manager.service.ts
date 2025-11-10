@@ -88,7 +88,7 @@ export class TrainerManagerService {
 		this.currentStep = this.nextStep;
 		this.nextStepIndex++;
 		if (this.currentDirection[this.nextStepIndex]) {
-			this.nextStep = this.currentDirection[this.nextStepIndex];
+			this.updateNextStep();
 		} else {
 			this.changeDirection();
 		}

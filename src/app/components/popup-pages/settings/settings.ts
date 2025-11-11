@@ -14,6 +14,14 @@ export class Settings {
 	protected trainerManager = inject(TrainerManagerService);
 
 	saveSettings() {
-		localStorage.setItem("Settings", JSON.stringify(this.trainerManager.settings));
+		localStorage.setItem('Settings', JSON.stringify(this.trainerManager.settings));
+		// Display and hide success message
+		const saveStatus = document.getElementById('save-status');
+		if (saveStatus) {
+			saveStatus.style.display = 'block';
+			setTimeout(() => {
+				saveStatus.style.display = 'none';
+			}, 3000);
+		}
 	}
 }

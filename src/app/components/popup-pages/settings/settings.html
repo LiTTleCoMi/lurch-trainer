@@ -55,6 +55,22 @@
 			Include scroll steps in training; Jump inputs are excluded from this rule
 		</p>
 	</div>
+	<div class="setting">
+		<label class="checkbox-container setting-label">
+			Scroll for key steps
+			<input
+				class="checkbox"
+				type="checkbox"
+				[(ngModel)]="trainerManager.settings.scrollBypassKey"
+			/>
+			<span class="material-symbols-outlined"
+				>{{ trainerManager.settings.scrollBypassKey ? 'toggle_on' : 'toggle_off' }}
+			</span>
+		</label>
+		<p class="description">
+			Scroll inputs can be used as keyboard inputs
+		</p>
+	</div>
 </div>
 <div class="save-container">
 	<button class="save-button" (click)="saveSettings()">Save Changes</button>

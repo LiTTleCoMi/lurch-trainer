@@ -14,6 +14,7 @@ interface Settings {
 	jumpMethod: Input;
 	useJumps: boolean;
 	useScroll: boolean;
+	scrollBypassKey: boolean;
 }
 
 @Injectable({
@@ -47,6 +48,7 @@ export class TrainerManagerService {
 		jumpMethod: Input.Scroll,
 		useJumps: false,
 		useScroll: false,
+		scrollBypassKey: false,
 	};
 
 	constructor() {
@@ -104,10 +106,11 @@ export class TrainerManagerService {
 	}
 
 	private calculateLurchDirection() {
-		const noJumpPrevActions = this.prevActivatedActions.filter((action) => action.action !== 'jump');
+		const noJumpPrevActions = this.prevActivatedActions.filter(
+			(action) => action.action !== 'jump'
+		);
 		const noJumpActions = this.activatedActions.filter((action) => action.action !== 'jump');
 		if (noJumpPrevActions.length >= noJumpActions.length) return;
-		
 	}
 
 	private advanceWhileMatched() {
@@ -128,8 +131,12 @@ export class TrainerManagerService {
 
 		return this.nextStep.every((nextAction) =>
 			this.activatedActions.some((action) => {
-				if (action.useScroll) {
-					return this.actionsEqual(action, nextAction, true);
+				if (this.settings.scrollBypassKey) {
+					if (action.useScroll) {
+						return this.actionsEqual(action, nextAction, true);
+					} else {
+						return this.actionsEqual(action, nextAction);
+					}
 				} else {
 					return this.actionsEqual(action, nextAction);
 				}

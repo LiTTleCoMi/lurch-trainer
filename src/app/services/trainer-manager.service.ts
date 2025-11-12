@@ -36,6 +36,7 @@ export class TrainerManagerService {
 	private currentDirection = this.selectedStrafe.directions[0];
 	private currentDirectionIndex = 0;
 	private activatedActions: BoundAction[] = [];
+	private prevActivatedActions: BoundAction[] = [];
 	private currentStep: BoundAction[] = [];
 	private nextStepIndex = 0;
 	private nextStep: BoundAction[] = [];
@@ -96,8 +97,17 @@ export class TrainerManagerService {
 	}
 
 	private updateActivatedActions(actions: BoundAction[]) {
+		this.prevActivatedActions = [...this.activatedActions];
 		this.activatedActions = actions;
+		this.calculateLurchDirection();
 		if (this.training) this.advanceWhileMatched();
+	}
+
+	private calculateLurchDirection() {
+		const noJumpPrevActions = this.prevActivatedActions.filter((action) => action.action !== 'jump');
+		const noJumpActions = this.activatedActions.filter((action) => action.action !== 'jump');
+		if (noJumpPrevActions.length >= noJumpActions.length) return;
+		
 	}
 
 	private advanceWhileMatched() {
@@ -117,7 +127,13 @@ export class TrainerManagerService {
 			return false;
 
 		return this.nextStep.every((nextAction) =>
-			this.activatedActions.some((action) => this.actionsEqual(action, nextAction, true))
+			this.activatedActions.some((action) => {
+				if (action.useScroll) {
+					return this.actionsEqual(action, nextAction, true);
+				} else {
+					return this.actionsEqual(action, nextAction);
+				}
+			})
 		);
 	}
 
@@ -164,7 +180,9 @@ export class TrainerManagerService {
 			this.nextStep = this.nextStep.filter((action) => action.action !== 'jump');
 		}
 		if (!this.settings.useScroll) {
-			this.nextStep = this.nextStep.filter((action) => !action.useScroll || action.action === 'jump');
+			this.nextStep = this.nextStep.filter(
+				(action) => !action.useScroll || action.action === 'jump'
+			);
 		}
 	}
 

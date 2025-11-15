@@ -262,7 +262,7 @@ export class StrafesService {
 			],
 		},
 		{
-			name: 'Backwards Yuki (CW)',
+			name: 'Backward Yuki (CW)',
 			directions: [
 				[
 					[],
@@ -299,7 +299,7 @@ export class StrafesService {
 			],
 		},
 		{
-			name: 'Backwards Yuki (CCW)',
+			name: 'Backward Yuki (CCW)',
 			directions: [
 				[
 					[],
@@ -331,6 +331,84 @@ export class StrafesService {
 						{ action: 'left', useScroll: false },
 						{ action: 'backward', useScroll: false },
 						{ action: 'forward', useScroll: true },
+					],
+				],
+			],
+		},
+		{
+			name: 'Forward Yuki (CW)',
+			directions: [
+				[
+					[
+						{ action: 'jump', useScroll: false },
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'forward', useScroll: true },
+						{ action: 'backward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'forward', useScroll: true },
+						{ action: 'left', useScroll: false },
+					],
+				],
+			],
+		},
+		{
+			name: 'Forward Yuki (CCW)',
+			directions: [
+				[
+					[
+						{ action: 'jump', useScroll: false },
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: false },
+					],
+					[
+						{ action: 'right', useScroll: false },
+						{ action: 'forward', useScroll: false },
+						{ action: 'left', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'forward', useScroll: true },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+					],
+					[
+						{ action: 'left', useScroll: false },
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'forward', useScroll: true },
+						{ action: 'backward', useScroll: false },
+						{ action: 'right', useScroll: false },
+					],
+					[
+						{ action: 'forward', useScroll: true },
+						{ action: 'right', useScroll: false },
 					],
 				],
 			],

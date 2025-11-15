@@ -99,18 +99,54 @@ export class TrainerManagerService {
 	}
 
 	private updateActivatedActions(actions: BoundAction[]) {
-		this.prevActivatedActions = [...this.activatedActions];
-		this.activatedActions = actions;
+		// Make sure both are fully cloned (not referencing same objects)
+		this.prevActivatedActions = structuredClone(this.activatedActions);
+		this.activatedActions = structuredClone(actions);
 		this.calculateLurchDirection();
 		if (this.training) this.advanceWhileMatched();
 	}
 
 	private calculateLurchDirection() {
+		// Filter out jumps — lurch is directional only
 		const noJumpPrevActions = this.prevActivatedActions.filter(
 			(action) => action.action !== 'jump'
 		);
 		const noJumpActions = this.activatedActions.filter((action) => action.action !== 'jump');
-		if (noJumpPrevActions.length >= noJumpActions.length) return;
+
+		// Step 1: Find newly pressed movement keys
+		const newlyPressed = noJumpActions.filter(
+			(a) => !noJumpPrevActions.some((b) => b.action === a.action)
+		);
+		if (newlyPressed.length === 0) return;
+
+		// Step 2: Determine vector
+		let dir = { x: 0, y: 0 };
+
+		for (const act of noJumpActions) {
+			switch (act.action) {
+				case 'forward':
+					dir.y += 1;
+					break;
+				case 'backward':
+					dir.y -= 1;
+					break;
+				case 'left':
+					dir.x -= 1;
+					break;
+				case 'right':
+					dir.x += 1;
+					break;
+			}
+		}
+
+		// Step 3: Normalize
+		const magnitude = Math.hypot(dir.x, dir.y);
+		if (magnitude > 0) {
+			dir.x /= magnitude;
+			dir.y /= magnitude;
+		}
+
+		console.log('Lurch direction:', dir);
 	}
 
 	private advanceWhileMatched() {

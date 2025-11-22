@@ -1,0 +1,12 @@
+<div class="arrow-container" [style.width.px]="overlayWidth" [style.height.px]="overlayHeight">
+	@for (a of arrows.values(); track a.id) {
+	<div
+		class="arrow-wrapper"
+		[style.left.%]="a.posX"
+		[style.top.%]="a.posY"
+		[style.transform]="'rotate(' + a.angle + 'deg)'"
+	>
+		<div class="arrow animate" (animationend)="removeArrow(a.id)"></div>
+	</div>
+	}
+</div>

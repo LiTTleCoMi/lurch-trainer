@@ -1,0 +1,41 @@
+.arrow-wrapper {
+  position: relative;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arrow-wrapper .arrow {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 30px solid red;
+  opacity: 0;
+  transform: translateY(0);
+  /* Apply animation when class active */
+}
+.arrow-wrapper .arrow.animate {
+  animation: slideFade 0.3s ease-out;
+}
+
+/* Animation keyframes */
+@keyframes slideFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 0.6;
+    transform: translateY(-20px);
+  }
+  99% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}/*# sourceMappingURL=lurch-direction.css.map */

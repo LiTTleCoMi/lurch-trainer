@@ -1,0 +1,47 @@
+@use 'colors';
+
+$arrow-height: 30px;
+$arrow-radius: calc($arrow-height * 1.2);
+
+.arrow-container {
+	height: 226px;
+	width: 306px;
+	position: relative;
+
+	.arrow-wrapper {
+		position: absolute;
+
+		.arrow {
+			position: absolute;
+			top: -$arrow-height;
+			left: -$arrow-radius;
+			transform-origin: center;
+			width: 0;
+			height: 0;
+			border-left: $arrow-radius solid transparent;
+			border-right: $arrow-radius solid transparent;
+			border-bottom: $arrow-height solid colors.$primary-blue;
+
+			opacity: 0;
+			transform: translateY(0);
+			scale: 100%;
+
+			&.animate {
+				animation: slideFade 0.4s ease-in-out;
+			}
+		}
+	}
+}
+
+@keyframes slideFade {
+	0% {
+		opacity: .6;
+		transform: translateY(0);
+		scale: 100%;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-$arrow-height * 4);
+		scale: 10%;
+	}
+}

@@ -31,6 +31,9 @@
 			</button>
 		</div>
 	</div>
-	<app-overlay />
+	<div class="overlay-container">
+		<app-overlay />
+		<app-lurch-direction />
+	</div>
 	<app-popup [visible]="popupVisible" (close)="hidePopup()" [page]="popupPage"></app-popup>
 </div>

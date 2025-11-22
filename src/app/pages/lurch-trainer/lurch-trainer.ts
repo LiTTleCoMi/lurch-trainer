@@ -6,10 +6,11 @@ import { Popup } from '../../components/popup/popup';
 import { PopupPages } from '../../interfaces/popup-pages.interface';
 import { InputService } from '../../services/input.service';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
+import { LurchDirection } from '../../components/lurch-direction/lurch-direction';
 
 @Component({
 	selector: 'app-lurch-trainer',
-	imports: [Overlay, Popup],
+	imports: [Overlay, Popup, LurchDirection],
 	templateUrl: './lurch-trainer.html',
 	styleUrl: './lurch-trainer.scss',
 })

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { StrafesService } from './strafes.service';
 import { InputService } from './input.service';
 import { BoundAction, Input } from '../interfaces/binds.interface';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 
 export interface TrainerState {
 	shouldBePressed: BoundAction[];
@@ -31,6 +31,10 @@ export class TrainerManagerService {
 		currentStep: [],
 	});
 	readonly state$ = this._state.asObservable();
+
+	private prevDir = { x: 0, y: 0 };
+	private _lurchDir = new BehaviorSubject<{ x: number; y: number }>({ x: 0, y: 0 });
+	lurchDir$ = this._lurchDir.asObservable();
 
 	training = false;
 	selectedStrafe = this.strafesService.strafes[0];
@@ -102,51 +106,47 @@ export class TrainerManagerService {
 		// Make sure both are fully cloned (not referencing same objects)
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
-		this.calculateLurchDirection();
+		this.calculateDirection();
 		if (this.training) this.advanceWhileMatched();
 	}
 
-	private calculateLurchDirection() {
-		// Filter out jumps — lurch is directional only
+	private calculateDirection() {
 		const noJumpPrevActions = this.prevActivatedActions.filter(
 			(action) => action.action !== 'jump'
 		);
 		const noJumpActions = this.activatedActions.filter((action) => action.action !== 'jump');
 
-		// Step 1: Find newly pressed movement keys
-		const newlyPressed = noJumpActions.filter(
-			(a) => !noJumpPrevActions.some((b) => b.action === a.action)
-		);
-		if (newlyPressed.length === 0) return;
-
-		// Step 2: Determine vector
 		let dir = { x: 0, y: 0 };
 
 		for (const act of noJumpActions) {
 			switch (act.action) {
 				case 'forward':
+					if (dir.y === 1) continue;
 					dir.y += 1;
 					break;
 				case 'backward':
+					if (dir.y === -1) continue;
 					dir.y -= 1;
 					break;
-				case 'left':
-					dir.x -= 1;
-					break;
 				case 'right':
+					if (dir.x === 1) continue;
 					dir.x += 1;
+					break;
+				case 'left':
+					if (dir.x === -1) continue;
+					dir.x -= 1;
 					break;
 			}
 		}
 
-		// Step 3: Normalize
-		const magnitude = Math.hypot(dir.x, dir.y);
-		if (magnitude > 0) {
-			dir.x /= magnitude;
-			dir.y /= magnitude;
+		// if direction is null or same or no lurch was triggered don't do anything
+		if (dir.x === 0 && dir.y === 0 || (this.prevDir.y === dir.y && this.prevDir.x === dir.x) || noJumpActions.length <= noJumpPrevActions.length) {
+			this.prevDir = structuredClone(dir);
+			return;
 		}
-
-		console.log('Lurch direction:', dir);
+		
+		this.prevDir = structuredClone(dir);
+		this._lurchDir.next(dir);
 	}
 
 	private advanceWhileMatched() {

@@ -1,4 +1,4 @@
-<div class="arrow-container" [style.width.px]="overlayWidth" [style.height.px]="overlayHeight">
+<div class="arrows-container" [style.width.px]="overlayWidth + 15" [style.height.px]="overlayHeight + 15">
 	@for (a of arrows.values(); track a.id) {
 	<div
 		class="arrow-wrapper"
@@ -7,6 +7,15 @@
 		[style.transform]="'rotate(' + a.angle + 'deg)'"
 	>
 		<div class="arrow animate" (animationend)="removeArrow(a.id)"></div>
+	</div>
+	} @for (dir of staticDirections; track $index) {
+	<div
+		class="arrow-wrapper"
+		[style.left.%]="getPositionX(dir.x)"
+		[style.top.%]="getPositionY(dir.y)"
+		[style.transform]="'rotate(' + getAngle(dir.x, dir.y) + 'deg)'"
+	>
+		<div class="arrow"></div>
 	</div>
 	}
 </div>

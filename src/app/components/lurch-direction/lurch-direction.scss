@@ -1,11 +1,9 @@
 @use 'colors';
 
 $arrow-height: 30px;
-$arrow-radius: calc($arrow-height * 1.2);
+$arrow-radius: calc($arrow-height * 1.1);
 
-.arrow-container {
-	height: 226px;
-	width: 306px;
+.arrows-container {
 	position: relative;
 
 	.arrow-wrapper {
@@ -16,18 +14,19 @@ $arrow-radius: calc($arrow-height * 1.2);
 			top: -$arrow-height;
 			left: -$arrow-radius;
 			transform-origin: center;
-			width: 0;
-			height: 0;
+			width: 20;
+			height: 20;
+
 			border-left: $arrow-radius solid transparent;
 			border-right: $arrow-radius solid transparent;
-			border-bottom: $arrow-height solid colors.$primary-blue;
+			border-bottom: $arrow-height solid white;
 
-			opacity: 0;
-			transform: translateY(0);
-			scale: 100%;
+			opacity: 0.1;
+
+			filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 
 			&.animate {
-				animation: slideFade 0.4s ease-in-out;
+				animation: slideFade 0.5s ease-out;
 			}
 		}
 	}
@@ -35,13 +34,11 @@ $arrow-radius: calc($arrow-height * 1.2);
 
 @keyframes slideFade {
 	0% {
-		opacity: .6;
-		transform: translateY(0);
-		scale: 100%;
+		opacity: 0.7;
+		transform: translateY(0) scale(1);
 	}
 	100% {
 		opacity: 0;
-		transform: translateY(-$arrow-height * 4);
-		scale: 10%;
+		transform: translateY(-$arrow-height * 2.5) scale(0.2);
 	}
 }

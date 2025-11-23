@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
 
 interface ArrowInstance {
@@ -16,15 +16,23 @@ interface ArrowInstance {
 	styleUrls: ['./lurch-direction.scss'],
 })
 export class LurchDirection implements AfterViewInit {
-	@Input() targetElement!: HTMLElement;
+	private trainer = inject(TrainerManagerService);
 
 	protected overlayWidth = 0;
 	protected overlayHeight = 0;
 
-	private trainer = inject(TrainerManagerService);
-
-	arrows = new Map<number, ArrowInstance>();
+	protected arrows = new Map<number, ArrowInstance>();
 	private nextId = 0;
+	readonly staticDirections = [
+		{ x: 0, y: 1 },
+		{ x: 1, y: 1 },
+		{ x: 1, y: 0 },
+		{ x: 1, y: -1 },
+		{ x: 0, y: -1 },
+		{ x: -1, y: -1 },
+		{ x: -1, y: 0 },
+		{ x: -1, y: 1 },
+	];
 
 	constructor() {
 		this.trainer.lurchDir$.subscribe((dir) => {
@@ -32,24 +40,24 @@ export class LurchDirection implements AfterViewInit {
 		});
 	}
 
-  ngAfterViewInit() {
-    const overlayRef = document.querySelector(".overlay");
-    if (!overlayRef) return;
-    
-    const updateOverlaySize = () => {
-      if (!overlayRef) return;
-      const overlayRect = overlayRef.getBoundingClientRect();
-      this.overlayWidth = overlayRect.width;
-      this.overlayHeight = overlayRect.height;
-    };
+	ngAfterViewInit() {
+		const overlayRef = document.getElementById('overlay');
+		if (!overlayRef) return;
 
-    updateOverlaySize();
+		const updateOverlaySize = () => {
+			if (!overlayRef) return;
+			const overlayRect = overlayRef.getBoundingClientRect();
+			this.overlayWidth = overlayRect.width;
+			this.overlayHeight = overlayRect.height;
+		};
 
-    const overlayObs = new ResizeObserver(() => updateOverlaySize());
-    overlayObs.observe(overlayRef);
+		updateOverlaySize();
+
+		const overlayObs = new ResizeObserver(() => updateOverlaySize());
+		overlayObs.observe(overlayRef);
 	}
 
-	spawnArrow(x: number, y: number) {
+	private spawnArrow(x: number, y: number) {
 		const id = this.nextId++;
 		const angle = this.getAngle(x, y);
 
@@ -65,19 +73,19 @@ export class LurchDirection implements AfterViewInit {
 		this.arrows.set(id, arrow);
 	}
 
-	removeArrow(id: number) {
+	protected removeArrow(id: number) {
 		this.arrows.delete(id);
 	}
 
-	getAngle(x: number, y: number): number {
+	protected getAngle(x: number, y: number): number {
 		return (Math.atan2(y, x) * (180 / Math.PI) - 90) * -1;
 	}
 
-	getPositionX(x: number) {
+	protected getPositionX(x: number) {
 		return x * 50 + 50;
 	}
 
-	getPositionY(y: number) {
+	protected getPositionY(y: number) {
 		return y * -50 + 50;
 	}
 }

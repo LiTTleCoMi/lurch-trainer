@@ -106,11 +106,21 @@ export class TrainerManagerService {
 		// Make sure both are fully cloned (not referencing same objects)
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
-		this.calculateDirection();
+		this.updateDirectionArrows();
 		if (this.training) this.advanceWhileMatched();
 	}
 
-	private calculateDirection() {
+	private updateDirectionArrows() {
+		const dir = this.calculateLurchDirection();
+		if (!dir) return;
+
+		this._lurchDir.next(dir);
+	}
+
+	private calculateLurchDirection(): {
+		x: number;
+		y: number;
+	} | null {
 		const noJumpPrevActions = this.prevActivatedActions.filter(
 			(action) => action.action !== 'jump'
 		);
@@ -139,14 +149,18 @@ export class TrainerManagerService {
 			}
 		}
 
-		// if direction is null or same or no lurch was triggered don't do anything
-		if (dir.x === 0 && dir.y === 0 || (this.prevDir.y === dir.y && this.prevDir.x === dir.x) || noJumpActions.length <= noJumpPrevActions.length) {
+		// if direction is null, same, or no lurch was triggered, then return null
+		if (
+			(dir.x === 0 && dir.y === 0) ||
+			(this.prevDir.y === dir.y && this.prevDir.x === dir.x) ||
+			noJumpActions.length <= noJumpPrevActions.length
+		) {
 			this.prevDir = structuredClone(dir);
-			return;
+			return null;
 		}
-		
+
 		this.prevDir = structuredClone(dir);
-		this._lurchDir.next(dir);
+		return dir;
 	}
 
 	private advanceWhileMatched() {

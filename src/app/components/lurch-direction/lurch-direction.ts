@@ -23,7 +23,7 @@ export class LurchDirection implements AfterViewInit {
 
 	protected arrows = new Map<number, ArrowInstance>();
 	private nextId = 0;
-	readonly staticDirections = [
+	protected readonly staticDirections = [
 		{ x: 0, y: 1 },
 		{ x: 1, y: 1 },
 		{ x: 1, y: 0 },

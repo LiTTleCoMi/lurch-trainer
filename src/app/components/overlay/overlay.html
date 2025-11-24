@@ -1,50 +1,50 @@
 <div class="overlay" id="overlay">
 	<div class="keyboard">
 		<div
-			[class.pressed]="isActivated({ action: 'forward', useScroll: false })"
-			[class.press]="shouldActivate({ action: 'forward', useScroll: false })"
-			[class.release]="shouldUnactivate({ action: 'forward', useScroll: false })"
-			[class.hold]="shouldRemainActivated({ action: 'forward', useScroll: false })"
+			[class.pressed]="isActivated({ action: Action.Forward, useScroll: false })"
+			[class.press]="shouldActivate({ action: Action.Forward, useScroll: false })"
+			[class.release]="shouldUnactivate({ action: Action.Forward, useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: Action.Forward, useScroll: false })"
 			class="key"
 			id="w"
 		>
 			{{ inputService.keyBinds.forward | uppercase }}
 		</div>
 		<div
-			[class.pressed]="isActivated({ action: 'left', useScroll: false })"
-			[class.press]="shouldActivate({ action: 'left', useScroll: false })"
-			[class.release]="shouldUnactivate({ action: 'left', useScroll: false })"
-			[class.hold]="shouldRemainActivated({ action: 'left', useScroll: false })"
+			[class.pressed]="isActivated({ action: Action.Left, useScroll: false })"
+			[class.press]="shouldActivate({ action: Action.Left, useScroll: false })"
+			[class.release]="shouldUnactivate({ action: Action.Left, useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: Action.Left, useScroll: false })"
 			class="key"
 			id="a"
 		>
 			{{ inputService.keyBinds.left | uppercase }}
 		</div>
 		<div
-			[class.pressed]="isActivated({ action: 'backward', useScroll: false })"
-			[class.press]="shouldActivate({ action: 'backward', useScroll: false })"
-			[class.release]="shouldUnactivate({ action: 'backward', useScroll: false })"
-			[class.hold]="shouldRemainActivated({ action: 'backward', useScroll: false })"
+			[class.pressed]="isActivated({ action: Action.Backward, useScroll: false })"
+			[class.press]="shouldActivate({ action: Action.Backward, useScroll: false })"
+			[class.release]="shouldUnactivate({ action: Action.Backward, useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: Action.Backward, useScroll: false })"
 			class="key"
 			id="s"
 		>
 			{{ inputService.keyBinds.backward | uppercase }}
 		</div>
 		<div
-			[class.pressed]="isActivated({ action: 'right', useScroll: false })"
-			[class.press]="shouldActivate({ action: 'right', useScroll: false })"
-			[class.release]="shouldUnactivate({ action: 'right', useScroll: false })"
-			[class.hold]="shouldRemainActivated({ action: 'right', useScroll: false })"
+			[class.pressed]="isActivated({ action: Action.Right, useScroll: false })"
+			[class.press]="shouldActivate({ action: Action.Right, useScroll: false })"
+			[class.release]="shouldUnactivate({ action: Action.Right, useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: Action.Right, useScroll: false })"
 			class="key"
 			id="d"
 		>
 			{{ inputService.keyBinds.right | uppercase }}
 		</div>
 		<div
-			[class.pressed]="isActivated({ action: 'jump', useScroll: false })"
-			[class.press]="shouldActivate({ action: 'jump', useScroll: false })"
-			[class.release]="shouldUnactivate({ action: 'jump', useScroll: false })"
-			[class.hold]="shouldRemainActivated({ action: 'jump', useScroll: false })"
+			[class.pressed]="isActivated({ action: Action.Jump, useScroll: false })"
+			[class.press]="shouldActivate({ action: Action.Jump, useScroll: false })"
+			[class.release]="shouldUnactivate({ action: Action.Jump, useScroll: false })"
+			[class.hold]="shouldRemainActivated({ action: Action.Jump, useScroll: false })"
 			class="key"
 			id="space"
 		>
@@ -58,7 +58,7 @@
 		<div class="wheel">
 			<div
 				[class.pressed]="
-					isScrolling('up')
+					isScrolling(ScrollDir.Up)
 				"
 				[class.press]="
 					shouldActivate({ action: inputService.scrollBinds.up, useScroll: true })
@@ -75,7 +75,7 @@
 				<span class="scroll-count">{{ inputService.scrollUpCount }}</span>
 			</div>
 			<div
-				[class.pressed]="isScrolling('down')"
+				[class.pressed]="isScrolling(ScrollDir.Down)"
 				[class.press]="
 					shouldActivate({ action: inputService.scrollBinds.down, useScroll: true })
 				"

@@ -5,6 +5,7 @@ export type StrafeStep = {
 	suggestedInputs: BoundAction[];
 	expectedLurchDirections: Direction[];
 	lurchDirection: Direction;
+	jump: boolean;
 };
 export type StrafeDirection = StrafeStep[];
 export interface StrafeItem {

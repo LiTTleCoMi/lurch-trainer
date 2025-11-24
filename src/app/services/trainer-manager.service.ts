@@ -43,10 +43,11 @@ export class TrainerManagerService {
 	private prevActivatedActions: BoundAction[] = [];
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
-	private prevStepIndex: number | null = null;
-	private prevStep: StrafeStep | null = null;
+	private currentDirectionIndex = 0;
+	private currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
+	private prevStep?: StrafeStep;
 	private currentStepIndex = 0;
-	private currentStep = this.selectedStrafe.directions[this.currentStepIndex];
+	private currentStep = this.currentDirection[this.currentStepIndex];
 
 	settings: Settings = {
 		jumpMethod: InputType.Scroll,
@@ -66,21 +67,54 @@ export class TrainerManagerService {
 		if (!this.selectedStrafe?.directions?.length) return;
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
-		this.prevStep = null;
-		this.prevStepIndex = null;
+		this.currentDirectionIndex = 0;
+		this.prevStep = undefined;
 		this.currentStepIndex = 0;
-		this.currentStep = this.selectedStrafe.directions[this.currentStepIndex];
+		this.currentStep = this.currentDirection[this.currentStepIndex];
 	}
 
-	private lurchDirection: Direction | null = null;
+	private lastLurchDir: Direction | null = null;
 	private updateActivatedActions(actions: BoundAction[]) {
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
-		this.lurchDirection = this.getLurchDirection();
-		if (!this.lurchDirection) return;
-		this._lurchDir.next(this.lurchDirection);
-		if (!this.training) return;
+		this.lastLurchDir = this.getLurchDirection();
+		if (!this.lastLurchDir) return;
+		this._lurchDir.next(this.lastLurchDir);
+		if (this.training) {
+			console.log(this.currentStep.lurchDirection);
+			console.log(this.lastLurchDir);
+			this.advanceWhileMatched();
+		}
 	}
+
+	private advanceStep() {
+		console.log("Advancing...")
+		this.currentStepIndex++;
+		if (this.currentStepIndex >= this.currentDirection.length) {
+			this.currentDirectionIndex++;
+			if (this.currentDirectionIndex >= this.selectedStrafe.directions.length) {
+				this.currentDirectionIndex = 0;
+			}
+			this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
+			this.currentStepIndex = 0;
+		}
+		this.currentStep = this.currentDirection[this.currentStepIndex];
+	}
+
+	private advanceWhileMatched() {
+		while (this.isStepMatched()) {
+			this.advanceStep();
+		}
+	}
+
+	private isStepMatched(): boolean {
+		// need to add jump logic here later, currently only matches based off of lurch direction
+		if (!this.lastLurchDir) return false;
+		const correctDir = this.currentStep.lurchDirection;
+		return this.lastLurchDir.x === correctDir.x && this.lastLurchDir.y === correctDir.y;
+	}
+
+	// Helper functions
 
 	private getLurchDirection(): Direction | null {
 		const noJumpPrevActions = this.filterJumpActions(this.prevActivatedActions);
@@ -122,8 +156,6 @@ export class TrainerManagerService {
 		this.prevDir = structuredClone(dir);
 		return dir;
 	}
-
-	// Helper functions
 
 	private filterJumpActions(actions: BoundAction[]): BoundAction[] {
 		return actions.filter((action) => action.action !== Action.Jump);

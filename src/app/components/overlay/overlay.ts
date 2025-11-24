@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { InputService } from '../../services/input.service';
-import { BoundAction, ScrollDirection } from '../../interfaces/actions.interface';
+import { Action, BoundAction, ScrollDirection } from '../../interfaces/actions.interface';
 import { UpperCasePipe } from '@angular/common';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
 
@@ -19,6 +19,10 @@ export class Overlay implements OnInit {
 	private shouldBeReleased: BoundAction[] = [];
 	private nextStep: BoundAction[] = [];
 	private currentStep: BoundAction[] = [];
+
+	// give template reference to types
+	protected Action = Action;
+	protected ScrollDir = ScrollDirection;
 
 	ngOnInit() {
 		this.inputService.activatedActions$.subscribe({

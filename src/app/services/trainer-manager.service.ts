@@ -8,8 +8,7 @@ import { Direction, StrafeStep } from '../interfaces/strafes.interface';
 export interface TrainerState {
 	shouldBePressed: BoundAction[];
 	shouldBeReleased: BoundAction[];
-	nextStep: BoundAction[];
-	currentStep: BoundAction[];
+	currentStepInputs: BoundAction[];
 }
 interface Settings {
 	jumpMethod: InputType;
@@ -28,8 +27,7 @@ export class TrainerManagerService {
 	private _state = new BehaviorSubject<TrainerState>({
 		shouldBePressed: [],
 		shouldBeReleased: [],
-		nextStep: [],
-		currentStep: [],
+		currentStepInputs: [],
 	});
 	readonly state$ = this._state.asObservable();
 
@@ -39,8 +37,10 @@ export class TrainerManagerService {
 
 	training = false;
 	selectedStrafe = this.strafesService.strafes[0];
+
 	private activatedActions: BoundAction[] = [];
 	private prevActivatedActions: BoundAction[] = [];
+
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
 	private currentDirectionIndex = 0;
@@ -48,6 +48,8 @@ export class TrainerManagerService {
 	private prevStep?: StrafeStep;
 	private currentStepIndex = 0;
 	private currentStep = this.currentDirection[this.currentStepIndex];
+
+	private lastLurchDir: Direction | null = null;
 
 	settings: Settings = {
 		jumpMethod: InputType.Scroll,
@@ -68,12 +70,12 @@ export class TrainerManagerService {
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
 		this.currentDirectionIndex = 0;
+		this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
 		this.prevStep = undefined;
 		this.currentStepIndex = 0;
 		this.currentStep = this.currentDirection[this.currentStepIndex];
 	}
 
-	private lastLurchDir: Direction | null = null;
 	private updateActivatedActions(actions: BoundAction[]) {
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
@@ -81,14 +83,13 @@ export class TrainerManagerService {
 		if (!this.lastLurchDir) return;
 		this._lurchDir.next(this.lastLurchDir);
 		if (this.training) {
-			console.log(this.currentStep.lurchDirection);
-			console.log(this.lastLurchDir);
 			this.advanceWhileMatched();
 		}
 	}
 
 	private advanceStep() {
-		console.log("Advancing...")
+		console.log('Advancing...');
+		this.prevStep = structuredClone(this.currentStep);
 		this.currentStepIndex++;
 		if (this.currentStepIndex >= this.currentDirection.length) {
 			this.currentDirectionIndex++;
@@ -99,6 +100,12 @@ export class TrainerManagerService {
 			this.currentStepIndex = 0;
 		}
 		this.currentStep = this.currentDirection[this.currentStepIndex];
+		this.updateStepDifferences();
+		this._state.next({
+			shouldBePressed: this.shouldBePressed,
+			shouldBeReleased: this.shouldBeReleased,
+			currentStepInputs: this.currentStep.suggestedInputs,
+		});
 	}
 
 	private advanceWhileMatched() {
@@ -114,7 +121,20 @@ export class TrainerManagerService {
 		return this.lastLurchDir.x === correctDir.x && this.lastLurchDir.y === correctDir.y;
 	}
 
+	//
 	// Helper functions
+	//
+
+	private updateStepDifferences() {
+		const prevStepInputs = this.prevStep?.suggestedInputs ?? [];
+		this.shouldBePressed = this.currentStep.suggestedInputs.filter(
+			(next) => !prevStepInputs.some((current) => this.actionsEqual(current, next))
+		);
+		this.shouldBeReleased = prevStepInputs.filter(
+			(current) =>
+				!this.currentStep.suggestedInputs.some((next) => this.actionsEqual(current, next))
+		);
+	}
 
 	private getLurchDirection(): Direction | null {
 		const noJumpPrevActions = this.filterJumpActions(this.prevActivatedActions);

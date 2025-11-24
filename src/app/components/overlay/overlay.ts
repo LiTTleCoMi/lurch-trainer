@@ -11,18 +11,17 @@ import { TrainerManagerService } from '../../services/trainer-manager.service';
 	styleUrl: './overlay.scss',
 })
 export class Overlay implements OnInit {
+	// give template reference to types
+	protected Action = Action;
+	protected ScrollDir = ScrollDirection;
+
 	protected inputService = inject(InputService);
 	private trainerManagerService = inject(TrainerManagerService);
 
 	private activatedActions: BoundAction[] = [];
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
-	private nextStep: BoundAction[] = [];
-	private currentStep: BoundAction[] = [];
-
-	// give template reference to types
-	protected Action = Action;
-	protected ScrollDir = ScrollDirection;
+	private currentStepInputs: BoundAction[] = [];
 
 	ngOnInit() {
 		this.inputService.activatedActions$.subscribe({
@@ -32,17 +31,17 @@ export class Overlay implements OnInit {
 			next: (state) => {
 				this.shouldBePressed = state.shouldBePressed;
 				this.shouldBeReleased = state.shouldBeReleased;
-				this.nextStep = state.nextStep;
-				this.currentStep = state.currentStep;
+				this.currentStepInputs = state.currentStepInputs;
 			},
 		});
 	}
 
-	// --- Template helpers ---
+	// template helpers
+
 	protected shouldRemainActivated(action: BoundAction): boolean {
 		return (
 			this.trainerManagerService.training &&
-			this.nextStep.some(
+			this.currentStepInputs.some(
 				(a) => a.action === action.action && a.useScroll === action.useScroll
 			) &&
 			!this.shouldBePressed.some(

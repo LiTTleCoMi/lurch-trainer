@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Input } from '../../../interfaces/binds.interface';
+import { InputType } from '../../../interfaces/actions.interface';
 import { TrainerManagerService } from '../../../services/trainer-manager.service';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 	styleUrl: './settings.scss',
 })
 export class Settings {
-	Input = Input; // so the template can access Input.Key and Input.Scroll
+	Input = InputType; // so the template can access Input.Key and Input.Scroll
 	protected trainerManager = inject(TrainerManagerService);
 
 	saveSettings() {

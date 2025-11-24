@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { InputService } from '../../../services/input.service';
-import { Action, ScrollDirection } from '../../../interfaces/binds.interface';
+import { Action, ScrollDirection } from '../../../interfaces/actions.interface';
 
 @Component({
 	selector: 'app-keybinds',

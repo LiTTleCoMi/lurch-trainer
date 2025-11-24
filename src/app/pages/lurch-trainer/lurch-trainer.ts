@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Overlay } from '../../components/overlay/overlay';
-import { StrafeInterface } from '../../interfaces/strafes.interface';
+import { Strafes } from '../../interfaces/strafes.interface';
 import { StrafesService } from '../../services/strafes.service';
 import { Popup } from '../../components/popup/popup';
 import { PopupPages } from '../../interfaces/popup-pages.interface';
@@ -18,8 +18,8 @@ export class LurchTrainer implements OnInit {
 	private strafesService = inject(StrafesService);
 	private inputService = inject(InputService);
 	protected trainerManagerService = inject(TrainerManagerService);
-	
-	strafes: StrafeInterface = [];
+
+	strafes: Strafes = [];
 	protected popupVisible = false;
 	protected popupPage: PopupPages = '';
 

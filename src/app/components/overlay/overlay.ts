@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { InputService } from '../../services/input.service';
-import { BoundAction, ScrollDirection } from '../../interfaces/binds.interface';
+import { BoundAction, ScrollDirection } from '../../interfaces/actions.interface';
 import { UpperCasePipe } from '@angular/common';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
 
@@ -72,7 +72,7 @@ export class Overlay implements OnInit {
 	}
 
 	protected isScrolling(direction: ScrollDirection): boolean {
-		if (direction === 'up') {
+		if (direction === ScrollDirection.Up) {
 			return this.inputService.scrollingUp;
 		} else {
 			return this.inputService.scrollingDown;

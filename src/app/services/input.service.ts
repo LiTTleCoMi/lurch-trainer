@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Action, BoundAction, ScrollDirection } from '../interfaces/binds.interface';
+import { Action, BoundAction, ScrollDirection } from '../interfaces/actions.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -20,8 +20,8 @@ export class InputService {
 		jump: ' ',
 	};
 	scrollBinds: Record<ScrollDirection, Action> = {
-		up: 'forward',
-		down: 'jump',
+		up: Action.Forward,
+		down: Action.Jump,
 	};
 
 	constructor() {
@@ -58,9 +58,17 @@ export class InputService {
 				if (typeof parsed === 'object' && parsed !== null) {
 					for (const [key, value] of Object.entries(parsed)) {
 						if (
-							['up', 'down'].includes(key) &&
+							[ScrollDirection.Up as string, ScrollDirection.Down as string].includes(
+								key
+							) &&
 							typeof value === 'string' &&
-							['forward', 'backward', 'left', 'right', 'jump'].includes(value)
+							[
+								Action.Forward as string,
+								Action.Backward as string,
+								Action.Left as string,
+								Action.Right as string,
+								Action.Jump as string,
+							].includes(value)
 						) {
 							this.scrollBinds[key as ScrollDirection] = value as Action;
 						} else {
@@ -149,7 +157,7 @@ export class InputService {
 	private scrollBuffer = 70;
 
 	updateScrollBuffer(direction: ScrollDirection) {
-		if (direction === 'up') {
+		if (direction === ScrollDirection.Up) {
 			clearTimeout(this.stopScrollingUp);
 			this.scrollingUp = true;
 			this.scrollUpCount++;

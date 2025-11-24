@@ -1,10 +1,14 @@
-import { BoundAction } from './binds.interface';
+import { BoundAction } from './actions.interface';
 
-export type StrafeInputs = BoundAction[][];
-
+export type Direction = { x: -1 | 0 | 1; y: -1 | 0 | 1 };
+export type StrafeStep = {
+	suggestedInputs: BoundAction[];
+	expectedLurchDirections: Direction[];
+	lurchDirection: Direction;
+};
+export type StrafeDirection = StrafeStep[];
 export interface StrafeItem {
 	name: string;
-	directions: StrafeInputs[];
+	directions: StrafeDirection[];
 }
-
-export type StrafeInterface = StrafeItem[];
+export type Strafes = StrafeItem[];

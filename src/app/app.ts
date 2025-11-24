@@ -1,6 +1,7 @@
 import { Component, HostListener, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { InputService } from './services/input.service';
+import { ScrollDirection } from './interfaces/actions.interface';
 
 @Component({
 	selector: 'app-root',
@@ -17,7 +18,7 @@ export class App {
 	}
 
 	private handleWheel(event: WheelEvent) {
-		const direction = event.deltaY < 0 ? 'up' : 'down';
+		const direction = event.deltaY < 0 ? ScrollDirection.Up : ScrollDirection.Down;
 		this.keyboardService.scroll(direction);
 	}
 

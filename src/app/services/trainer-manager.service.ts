@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { StrafesService } from './strafes.service';
 import { InputService } from './input.service';
-import { BoundAction, Input } from '../interfaces/binds.interface';
+import { Action, BoundAction, InputType } from '../interfaces/actions.interface';
 import { BehaviorSubject, tap } from 'rxjs';
+import { Direction, StrafeStep } from '../interfaces/strafes.interface';
 
 export interface TrainerState {
 	shouldBePressed: BoundAction[];
@@ -11,7 +12,7 @@ export interface TrainerState {
 	currentStep: BoundAction[];
 }
 interface Settings {
-	jumpMethod: Input;
+	jumpMethod: InputType;
 	useJumps: boolean;
 	useScroll: boolean;
 	scrollBypassKey: boolean;
@@ -32,24 +33,23 @@ export class TrainerManagerService {
 	});
 	readonly state$ = this._state.asObservable();
 
-	private prevDir = { x: 0, y: 0 };
-	private _lurchDir = new BehaviorSubject<{ x: number; y: number }>({ x: 0, y: 0 });
+	private prevDir: Direction = { x: 0, y: 0 };
+	private _lurchDir = new BehaviorSubject<Direction>({ x: 0, y: 0 });
 	lurchDir$ = this._lurchDir.asObservable();
 
 	training = false;
 	selectedStrafe = this.strafesService.strafes[0];
-	private currentDirection = this.selectedStrafe.directions[0];
-	private currentDirectionIndex = 0;
 	private activatedActions: BoundAction[] = [];
 	private prevActivatedActions: BoundAction[] = [];
-	private currentStep: BoundAction[] = [];
-	private nextStepIndex = 0;
-	private nextStep: BoundAction[] = [];
 	private shouldBePressed: BoundAction[] = [];
 	private shouldBeReleased: BoundAction[] = [];
+	private prevStepIndex: number | null = null;
+	private prevStep: StrafeStep | null = null;
+	private currentStepIndex = 0;
+	private currentStep = this.selectedStrafe.directions[this.currentStepIndex];
 
 	settings: Settings = {
-		jumpMethod: Input.Scroll,
+		jumpMethod: InputType.Scroll,
 		useJumps: false,
 		useScroll: false,
 		scrollBypassKey: false,
@@ -62,87 +62,47 @@ export class TrainerManagerService {
 		this.loadSettings();
 	}
 
-	private loadSettings() {
-		const storedSettings = localStorage.getItem('Settings');
-		if (!storedSettings) return;
-
-		try {
-			const parsed = JSON.parse(storedSettings);
-
-			// Type guard to validate structure
-			if (this.isValidSettings(parsed)) {
-				this.settings = parsed;
-			} else {
-				console.warn('Invalid settings structure — using defaults');
-			}
-		} catch (e) {
-			console.warn('Failed to parse settings JSON — using defaults');
-		}
-	}
-	/** Helper type guard */
-	private isValidSettings(value: any): value is Settings {
-		if (typeof value !== 'object' || value === null) return false;
-
-		const validJumpMethods = Object.values(Input);
-		const { jumpMethod, useJumps } = value;
-
-		return validJumpMethods.includes(jumpMethod) && typeof useJumps === 'boolean';
-	}
-
 	private startTraining() {
 		if (!this.selectedStrafe?.directions?.length) return;
-		this.currentDirection = this.selectedStrafe.directions[0];
-		this.currentDirectionIndex = 0;
-		this.currentStep = [];
-		this.nextStepIndex = 0;
-		this.updateNextStep();
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
-		this.updateStepDifferences();
-		this.advanceWhileMatched();
+		this.prevStep = null;
+		this.prevStepIndex = null;
+		this.currentStepIndex = 0;
+		this.currentStep = this.selectedStrafe.directions[this.currentStepIndex];
 	}
 
+	private lurchDirection: Direction | null = null;
 	private updateActivatedActions(actions: BoundAction[]) {
-		// Make sure both are fully cloned (not referencing same objects)
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
-		this.updateDirectionArrows();
-		if (this.training) this.advanceWhileMatched();
+		this.lurchDirection = this.getLurchDirection();
+		if (!this.lurchDirection) return;
+		this._lurchDir.next(this.lurchDirection);
+		if (!this.training) return;
 	}
 
-	private updateDirectionArrows() {
-		const dir = this.calculateLurchDirection();
-		if (!dir) return;
+	private getLurchDirection(): Direction | null {
+		const noJumpPrevActions = this.filterJumpActions(this.prevActivatedActions);
+		const noJumpActions = this.filterJumpActions(this.activatedActions);
 
-		this._lurchDir.next(dir);
-	}
-
-	private calculateLurchDirection(): {
-		x: number;
-		y: number;
-	} | null {
-		const noJumpPrevActions = this.prevActivatedActions.filter(
-			(action) => action.action !== 'jump'
-		);
-		const noJumpActions = this.activatedActions.filter((action) => action.action !== 'jump');
-
-		let dir = { x: 0, y: 0 };
+		let dir: Direction = { x: 0, y: 0 };
 
 		for (const act of noJumpActions) {
 			switch (act.action) {
-				case 'forward':
+				case Action.Forward:
 					if (dir.y === 1) continue;
 					dir.y += 1;
 					break;
-				case 'backward':
+				case Action.Backward:
 					if (dir.y === -1) continue;
 					dir.y -= 1;
 					break;
-				case 'right':
+				case Action.Right:
 					if (dir.x === 1) continue;
 					dir.x += 1;
 					break;
-				case 'left':
+				case Action.Left:
 					if (dir.x === -1) continue;
 					dir.x -= 1;
 					break;
@@ -163,93 +123,10 @@ export class TrainerManagerService {
 		return dir;
 	}
 
-	private advanceWhileMatched() {
-		while (this.isStepMatched()) {
-			this.advanceStep();
-		}
-	}
+	// Helper functions
 
-	private isStepMatched(): boolean {
-		const noJumpActivatedActions = this.activatedActions.filter(
-			(action) => action.action !== 'jump'
-		);
-		if (
-			this.activatedActions.length !== this.nextStep.length &&
-			noJumpActivatedActions.length !== this.nextStep.length
-		)
-			return false;
-
-		return this.nextStep.every((nextAction) =>
-			this.activatedActions.some((action) => {
-				if (this.settings.scrollBypassKey) {
-					if (action.useScroll) {
-						return this.actionsEqual(action, nextAction, true);
-					} else {
-						return this.actionsEqual(action, nextAction);
-					}
-				} else {
-					return this.actionsEqual(action, nextAction);
-				}
-			})
-		);
-	}
-
-	private advanceStep() {
-		this.currentStep = this.nextStep;
-		this.nextStepIndex++;
-		if (this.currentDirection[this.nextStepIndex]) {
-			this.updateNextStep();
-		} else {
-			this.changeDirection();
-		}
-		this.updateStepDifferences();
-	}
-
-	private changeDirection() {
-		this.currentDirectionIndex++;
-		if (!this.selectedStrafe.directions[this.currentDirectionIndex]) {
-			this.currentDirectionIndex = 0;
-		}
-		this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
-		this.nextStepIndex = 0;
-		this.updateNextStep();
-	}
-
-	private updateStepDifferences() {
-		this.shouldBePressed = this.nextStep.filter(
-			(next) => !this.currentStep.some((current) => this.actionsEqual(current, next))
-		);
-		this.shouldBeReleased = this.currentStep.filter(
-			(current) => !this.nextStep.some((next) => this.actionsEqual(current, next))
-		);
-		this.emitNextState();
-	}
-
-	private updateNextStep() {
-		this.nextStep = this.currentDirection[this.nextStepIndex];
-		if (this.settings.useJumps) {
-			this.nextStep.forEach((action) => {
-				if (action.action === 'jump') {
-					action.useScroll = this.settings.jumpMethod !== Input.Key;
-				}
-			});
-		} else {
-			this.nextStep = this.nextStep.filter((action) => action.action !== 'jump');
-		}
-		if (!this.settings.useScroll) {
-			this.nextStep = this.nextStep.filter(
-				(action) => !action.useScroll || action.action === 'jump'
-			);
-		}
-	}
-
-	private emitNextState() {
-		this._state.next({
-			shouldBePressed: this.shouldBePressed,
-			shouldBeReleased: this.shouldBeReleased,
-			nextStep: this.nextStep,
-			currentStep: this.currentStep,
-		});
+	private filterJumpActions(actions: BoundAction[]): BoundAction[] {
+		return actions.filter((action) => action.action !== Action.Jump);
 	}
 
 	private actionsEqual(
@@ -264,6 +141,8 @@ export class TrainerManagerService {
 		}
 	}
 
+	// ------------------------------------------------------------------------------------------------------------------
+
 	updateSelectedStrafe(strafeName: string) {
 		const strafe = this.strafesService.strafes.find((strafe) => strafe.name == strafeName);
 		if (strafe) {
@@ -276,5 +155,34 @@ export class TrainerManagerService {
 	toggleTraining() {
 		this.training = !this.training;
 		if (this.training) this.startTraining();
+	}
+
+	// settings
+
+	private loadSettings() {
+		const storedSettings = localStorage.getItem('Settings');
+		if (!storedSettings) return;
+
+		try {
+			const parsed = JSON.parse(storedSettings);
+
+			// Type guard to validate structure
+			if (this.isValidSettings(parsed)) {
+				this.settings = parsed;
+			} else {
+				console.warn('Invalid settings structure — using defaults');
+			}
+		} catch (e) {
+			console.warn('Failed to parse settings JSON — using defaults');
+		}
+	}
+	// Helper type guard
+	private isValidSettings(value: any): value is Settings {
+		if (typeof value !== 'object' || value === null) return false;
+
+		const validJumpMethods = Object.values(InputType);
+		const { jumpMethod, useJumps } = value;
+
+		return validJumpMethods.includes(jumpMethod) && typeof useJumps === 'boolean';
 	}
 }

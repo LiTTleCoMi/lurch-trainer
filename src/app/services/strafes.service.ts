@@ -66,15 +66,6 @@ export class StrafesService {
 					{
 						suggestedInputs: [
 							{ action: Action.Right, useScroll: false },
-							{ action: Action.Jump, useScroll: false },
-						],
-						expectedLurchDirections: [{ x: 1, y: 0 }],
-						lurchDirection: { x: 1, y: 0 },
-						jump: true,
-					},
-					{
-						suggestedInputs: [
-							{ action: Action.Right, useScroll: false },
 							{ action: Action.Forward, useScroll: false },
 						],
 						expectedLurchDirections: [{ x: 1, y: 1 }],
@@ -110,7 +101,7 @@ export class StrafesService {
 							{ x: -1, y: 0 },
 							{ x: -1, y: -1 },
 						],
-						lurchDirection: { x: -1, y: 1 },
+						lurchDirection: { x: -1, y: 0 },
 						jump: false,
 					},
 				],

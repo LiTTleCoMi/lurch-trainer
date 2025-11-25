@@ -48,6 +48,7 @@ export class TrainerManagerService {
 	private prevStep?: StrafeStep;
 	private currentStepIndex = 0;
 	private currentStep = this.currentDirection[this.currentStepIndex];
+	private lastInputsShown: BoundAction[] = [];
 
 	private lastLurchDir: Direction | null = null;
 
@@ -67,6 +68,7 @@ export class TrainerManagerService {
 
 	private startTraining() {
 		if (!this.selectedStrafe?.directions?.length) return;
+		// reset
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
 		this.currentDirectionIndex = 0;
@@ -74,6 +76,10 @@ export class TrainerManagerService {
 		this.prevStep = undefined;
 		this.currentStepIndex = 0;
 		this.currentStep = this.currentDirection[this.currentStepIndex];
+		this.lastInputsShown = [];
+		this.updateStepDifferences();
+		this.emitNextState();
+		this.advanceWhileMatched();
 	}
 
 	private updateActivatedActions(actions: BoundAction[]) {
@@ -88,27 +94,25 @@ export class TrainerManagerService {
 	}
 
 	private advanceStep() {
-		console.log('Advancing...');
 		this.prevStep = structuredClone(this.currentStep);
+
 		this.currentStepIndex++;
-		if (this.currentStepIndex >= this.currentDirection.length) {
+		if (!this.currentDirection[this.currentStepIndex]) {
+			this.currentStepIndex = 0;
 			this.currentDirectionIndex++;
-			if (this.currentDirectionIndex >= this.selectedStrafe.directions.length) {
+			if (!this.selectedStrafe.directions[this.currentDirectionIndex]) {
 				this.currentDirectionIndex = 0;
 			}
 			this.currentDirection = this.selectedStrafe.directions[this.currentDirectionIndex];
-			this.currentStepIndex = 0;
 		}
 		this.currentStep = this.currentDirection[this.currentStepIndex];
+
 		this.updateStepDifferences();
-		this._state.next({
-			shouldBePressed: this.shouldBePressed,
-			shouldBeReleased: this.shouldBeReleased,
-			currentStepInputs: this.currentStep.suggestedInputs,
-		});
+		this.emitNextState();
 	}
 
 	private advanceWhileMatched() {
+		this.lastInputsShown = structuredClone(this.currentStep.suggestedInputs);
 		while (this.isStepMatched()) {
 			this.advanceStep();
 		}
@@ -125,12 +129,19 @@ export class TrainerManagerService {
 	// Helper functions
 	//
 
+	private emitNextState() {
+		this._state.next({
+			shouldBePressed: this.shouldBePressed,
+			shouldBeReleased: this.shouldBeReleased,
+			currentStepInputs: this.currentStep.suggestedInputs,
+		});
+	}
+
 	private updateStepDifferences() {
-		const prevStepInputs = this.prevStep?.suggestedInputs ?? [];
 		this.shouldBePressed = this.currentStep.suggestedInputs.filter(
-			(next) => !prevStepInputs.some((current) => this.actionsEqual(current, next))
+			(next) => !this.lastInputsShown.some((current) => this.actionsEqual(current, next))
 		);
-		this.shouldBeReleased = prevStepInputs.filter(
+		this.shouldBeReleased = this.lastInputsShown.filter(
 			(current) =>
 				!this.currentStep.suggestedInputs.some((next) => this.actionsEqual(current, next))
 		);

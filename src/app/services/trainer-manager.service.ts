@@ -13,8 +13,6 @@ export interface TrainerState {
 interface Settings {
 	jumpMethod: InputType;
 	useJumps: boolean;
-	useScroll: boolean;
-	scrollBypassKey: boolean;
 }
 
 @Injectable({
@@ -48,6 +46,8 @@ export class TrainerManagerService {
 	private prevStep?: StrafeStep;
 	private currentStepIndex = 0;
 	private currentStep = this.currentDirection[this.currentStepIndex];
+	private jumpedThisStep = false;
+	private correctlyLurchedThisStep = false;
 	private lastInputsShown: BoundAction[] = [];
 
 	private lastLurchDir: Direction | null = null;
@@ -55,8 +55,6 @@ export class TrainerManagerService {
 	settings: Settings = {
 		jumpMethod: InputType.Scroll,
 		useJumps: false,
-		useScroll: false,
-		scrollBypassKey: false,
 	};
 
 	constructor() {
@@ -68,6 +66,7 @@ export class TrainerManagerService {
 
 	private startTraining() {
 		if (!this.selectedStrafe?.directions?.length) return;
+		this.updateStrafeToSettings(); // update the steps to match settings
 		// reset
 		this.shouldBePressed = [];
 		this.shouldBeReleased = [];
@@ -76,6 +75,8 @@ export class TrainerManagerService {
 		this.prevStep = undefined;
 		this.currentStepIndex = 0;
 		this.currentStep = this.currentDirection[this.currentStepIndex];
+		this.jumpedThisStep = false;
+		this.correctlyLurchedThisStep = false;
 		this.lastInputsShown = [];
 		this.updateStepDifferences();
 		this.emitNextState();
@@ -86,15 +87,36 @@ export class TrainerManagerService {
 		this.prevActivatedActions = structuredClone(this.activatedActions);
 		this.activatedActions = structuredClone(actions);
 		this.lastLurchDir = this.getLurchDirection();
-		if (!this.lastLurchDir) return;
-		this._lurchDir.next(this.lastLurchDir);
-		if (this.training) {
-			this.advanceWhileMatched();
+		if (this.userJumped()) {
+			this.jumpedThisStep = true;
+			if (this.training) {
+				this.advanceWhileMatched();
+			}
+		} else {
+			if (!this.lastLurchDir) return;
+			this._lurchDir.next(this.lastLurchDir);
+			if (this.training) {
+				this.advanceWhileMatched();
+			}
 		}
+	}
+
+	private userJumped(): boolean {
+		if (
+			this.prevActivatedActions.length >= this.activatedActions.length ||
+			this.filterJumpActions(this.prevActivatedActions).length !==
+				this.filterJumpActions(this.activatedActions).length ||
+			this.prevActivatedActions.some((a) => a.action === Action.Jump)
+		)
+			return false;
+
+		return true;
 	}
 
 	private advanceStep() {
 		this.prevStep = structuredClone(this.currentStep);
+		this.jumpedThisStep = false;
+		this.correctlyLurchedThisStep = false;
 
 		this.currentStepIndex++;
 		if (!this.currentDirection[this.currentStepIndex]) {
@@ -119,22 +141,41 @@ export class TrainerManagerService {
 	}
 
 	private isStepMatched(): boolean {
-		// need to add jump logic here later, currently only matches based off of lurch direction
-		if (!this.lastLurchDir) return false;
-		const correctDir = this.currentStep.lurchDirection;
-		return this.lastLurchDir.x === correctDir.x && this.lastLurchDir.y === correctDir.y;
+		if (!this.currentStep.lurchDirection) {
+			this.correctlyLurchedThisStep = true;
+		} else if (!this.correctlyLurchedThisStep && this.lastLurchDir) {
+			const correctDir = this.currentStep.lurchDirection;
+			if (this.lastLurchDir.x === correctDir.x && this.lastLurchDir.y === correctDir.y) {
+				this.correctlyLurchedThisStep = true;
+			}
+		}
+		if (this.currentStep.jump) {
+			return this.correctlyLurchedThisStep && this.jumpedThisStep;
+		} else {
+			return this.correctlyLurchedThisStep;
+		}
 	}
 
 	//
 	// Helper functions
 	//
 
-	private emitNextState() {
-		this._state.next({
-			shouldBePressed: this.shouldBePressed,
-			shouldBeReleased: this.shouldBeReleased,
-			currentStepInputs: this.currentStep.suggestedInputs,
-		});
+	private updateStrafeToSettings() {
+		for (const direction of this.selectedStrafe.directions) {
+			for (const step of direction) {
+				if (this.settings.useJumps) {
+					step.suggestedInputs.forEach((a) => {
+						if (a.action === Action.Jump)
+							a.useScroll = this.settings.jumpMethod === InputType.Scroll;
+					});
+				} else {
+					step.jump = false;
+					step.suggestedInputs = step.suggestedInputs.filter(
+						(a) => a.action !== Action.Jump
+					);
+				}
+			}
+		}
 	}
 
 	private updateStepDifferences() {
@@ -145,6 +186,14 @@ export class TrainerManagerService {
 			(current) =>
 				!this.currentStep.suggestedInputs.some((next) => this.actionsEqual(current, next))
 		);
+	}
+
+	private emitNextState() {
+		this._state.next({
+			shouldBePressed: this.shouldBePressed,
+			shouldBeReleased: this.shouldBeReleased,
+			currentStepInputs: this.currentStep.suggestedInputs,
+		});
 	}
 
 	private getLurchDirection(): Direction | null {

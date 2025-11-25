@@ -1,40 +1,40 @@
 <div class="overlay">
 	<div class="keyboard">
 		<button
-			[class.listening]="actionIsListening('forward')"
-			(click)="listenMode($event, 'forward')"
+			[class.listening]="actionIsListening(Action.Forward)"
+			(click)="listenMode($event, Action.Forward)"
 			class="key"
 			id="w"
 		>
 			<span class="material-symbols-outlined"> keyboard_arrow_up </span>
 		</button>
 		<button
-			[class.listening]="actionIsListening('left')"
-			(click)="listenMode($event, 'left')"
+			[class.listening]="actionIsListening(Action.Left)"
+			(click)="listenMode($event, Action.Left)"
 			class="key"
 			id="a"
 		>
 			<span class="material-symbols-outlined"> keyboard_arrow_left </span>
 		</button>
 		<button
-			[class.listening]="actionIsListening('backward')"
-			(click)="listenMode($event, 'backward')"
+			[class.listening]="actionIsListening(Action.Backward)"
+			(click)="listenMode($event, Action.Backward)"
 			class="key"
 			id="s"
 		>
 			<span class="material-symbols-outlined"> keyboard_arrow_down </span>
 		</button>
 		<button
-			[class.listening]="actionIsListening('right')"
-			(click)="listenMode($event, 'right')"
+			[class.listening]="actionIsListening(Action.Right)"
+			(click)="listenMode($event, Action.Right)"
 			class="key"
 			id="d"
 		>
 			<span class="material-symbols-outlined"> keyboard_arrow_right </span>
 		</button>
 		<button
-			[class.listening]="actionIsListening('jump')"
-			(click)="listenMode($event, 'jump')"
+			[class.listening]="actionIsListening(Action.Jump)"
+			(click)="listenMode($event, Action.Jump)"
 			class="key"
 			id="space"
 		>
@@ -43,10 +43,10 @@
 	</div>
 	<div class="mouse">
 		<div class="wheel">
-			<button (click)="requestScrollRebind('up')" [class.selected]="rebindingScrollDirection('up')">
+			<button (click)="requestScrollRebind(ScrollDir.Up)" [class.selected]="rebindingScrollDirection(ScrollDir.Up)">
 				<span class="material-symbols-outlined"> arrow_drop_up </span>
 			</button>
-			<button (click)="requestScrollRebind('down')" [class.selected]="rebindingScrollDirection('down')">
+			<button (click)="requestScrollRebind(ScrollDir.Down)" [class.selected]="rebindingScrollDirection(ScrollDir.Down)">
 				<span class="material-symbols-outlined"> arrow_drop_down </span>
 			</button>
 		</div>
@@ -56,11 +56,11 @@
 		<h3>Select an Action</h3>
 		<hr />
 		<div class="action-list">
-			<button (click)="inputService.rebindScroll('forward')">Forward</button>
-			<button (click)="inputService.rebindScroll('backward')">Backward</button>
-			<button (click)="inputService.rebindScroll('left')">Left</button>
-			<button (click)="inputService.rebindScroll('right')">Right</button>
-			<button (click)="inputService.rebindScroll('jump')">Jump</button>
+			<button (click)="inputService.rebindScroll(Action.Forward)">Forward</button>
+			<button (click)="inputService.rebindScroll(Action.Backward)">Backward</button>
+			<button (click)="inputService.rebindScroll(Action.Left)">Left</button>
+			<button (click)="inputService.rebindScroll(Action.Right)">Right</button>
+			<button (click)="inputService.rebindScroll(Action.Jump)">Jump</button>
 		</div>
 	</div>
 </div>

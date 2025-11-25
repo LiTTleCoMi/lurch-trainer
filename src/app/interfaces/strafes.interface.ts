@@ -4,7 +4,7 @@ export type Direction = { x: -1 | 0 | 1; y: -1 | 0 | 1 };
 export type StrafeStep = {
 	suggestedInputs: BoundAction[];
 	expectedLurchDirections: Direction[];
-	lurchDirection: Direction;
+	lurchDirection: Direction | null;
 	jump: boolean;
 };
 export type StrafeDirection = StrafeStep[];

@@ -9,6 +9,9 @@ import { Action, ScrollDirection } from '../../../interfaces/actions.interface';
 	styleUrl: './keybinds.scss',
 })
 export class Keybinds {
+	protected Action = Action;
+	protected ScrollDir = ScrollDirection;
+
 	protected inputService = inject(InputService);
 
 	protected listenMode(event: Event, action: Action) {

@@ -8,7 +8,7 @@ import { Action } from '../interfaces/actions.interface';
 export class StrafesService {
 	strafes: Strafes = [
 		{
-			name: 'Forward RAS',
+			name: 'Forward Ras',
 			directions: [
 				[
 					{
@@ -19,6 +19,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 0 }],
 						lurchDirection: { x: -1, y: 0 },
 						jump: true,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -28,6 +29,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 1 }],
 						lurchDirection: { x: -1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -38,6 +40,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 0, y: 1 }],
 						lurchDirection: { x: 0, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -47,6 +50,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 1 }],
 						lurchDirection: { x: 1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -60,6 +64,7 @@ export class StrafesService {
 						],
 						lurchDirection: { x: 1, y: 0 },
 						jump: false,
+						canSkipOver: true,
 					},
 				],
 				[
@@ -71,6 +76,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 0 }],
 						lurchDirection: { x: 1, y: 0 },
 						jump: true,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -80,6 +86,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 1 }],
 						lurchDirection: { x: 1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -90,6 +97,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 0, y: 1 }],
 						lurchDirection: { x: 0, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -99,6 +107,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 1 }],
 						lurchDirection: { x: -1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -112,6 +121,69 @@ export class StrafesService {
 						],
 						lurchDirection: { x: -1, y: 0 },
 						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Forward Raf (L → R | Single Scroll)',
+			directions: [
+				[
+					{
+						suggestedInputs: [{ action: Action.Jump, useScroll: false }],
+						expectedLurchDirections: [],
+						lurchDirection: null,
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [{ action: Action.Forward, useScroll: false }],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: false,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
 					},
 				],
 			],
@@ -125,12 +197,14 @@ export class StrafesService {
 						expectedLurchDirections: [],
 						lurchDirection: null,
 						jump: true,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [{ action: Action.Backward, useScroll: false }],
 						expectedLurchDirections: [{ x: 0, y: -1 }],
 						lurchDirection: { x: 0, y: -1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -140,6 +214,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: -1 }],
 						lurchDirection: { x: -1, y: -1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -150,6 +225,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 0 }],
 						lurchDirection: { x: -1, y: 0 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -159,6 +235,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 1 }],
 						lurchDirection: { x: -1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -169,6 +246,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 0, y: 1 }],
 						lurchDirection: { x: 0, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -178,6 +256,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 1 }],
 						lurchDirection: { x: 1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -191,6 +270,7 @@ export class StrafesService {
 						],
 						lurchDirection: { x: 1, y: 0 },
 						jump: false,
+						canSkipOver: true,
 					},
 				],
 			],
@@ -204,12 +284,14 @@ export class StrafesService {
 						expectedLurchDirections: [],
 						lurchDirection: null,
 						jump: true,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [{ action: Action.Backward, useScroll: false }],
 						expectedLurchDirections: [{ x: 0, y: -1 }],
 						lurchDirection: { x: 0, y: -1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -219,6 +301,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: -1 }],
 						lurchDirection: { x: 1, y: -1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -229,6 +312,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 0 }],
 						lurchDirection: { x: 1, y: 0 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -238,6 +322,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 1, y: 1 }],
 						lurchDirection: { x: 1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -248,6 +333,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: 0, y: 1 }],
 						lurchDirection: { x: 0, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -257,6 +343,7 @@ export class StrafesService {
 						expectedLurchDirections: [{ x: -1, y: 1 }],
 						lurchDirection: { x: -1, y: 1 },
 						jump: false,
+						canSkipOver: true,
 					},
 					{
 						suggestedInputs: [
@@ -270,6 +357,7 @@ export class StrafesService {
 						],
 						lurchDirection: { x: -1, y: 0 },
 						jump: false,
+						canSkipOver: true,
 					},
 				],
 			],

@@ -135,8 +135,14 @@ export class TrainerManagerService {
 
 	private advanceWhileMatched() {
 		this.lastInputsShown = structuredClone(this.currentStep.suggestedInputs);
+		let hasAdvanced = false;
 		while (this.isStepMatched()) {
-			this.advanceStep();
+			if (hasAdvanced) {
+				if (!this.currentStep.canSkipOver) break;
+			} else {
+				this.advanceStep();
+				hasAdvanced = true;
+			}
 		}
 	}
 

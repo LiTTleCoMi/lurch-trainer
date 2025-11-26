@@ -189,6 +189,68 @@ export class StrafesService {
 			],
 		},
 		{
+			name: 'Forward Raf (R → L | Single Scroll)',
+			directions: [
+				[
+					{
+						suggestedInputs: [{ action: Action.Jump, useScroll: false }],
+						expectedLurchDirections: [],
+						lurchDirection: null,
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [{ action: Action.Forward, useScroll: false }],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: false,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
 			name: 'Backward Yuki (CW)',
 			directions: [
 				[

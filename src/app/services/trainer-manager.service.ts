@@ -13,6 +13,7 @@ export interface TrainerState {
 interface Settings {
 	jumpMethod: InputType;
 	useJumps: boolean;
+	lurchDirArrows: boolean;
 }
 
 @Injectable({
@@ -55,6 +56,7 @@ export class TrainerManagerService {
 	settings: Settings = {
 		jumpMethod: InputType.Scroll,
 		useJumps: false,
+		lurchDirArrows: true,
 	};
 
 	constructor() {

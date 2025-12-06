@@ -33,7 +33,9 @@
 	</div>
 	<div class="overlay-container">
 		<app-overlay />
-		<app-lurch-direction />
+		@if (trainerManagerService.settings.lurchDirArrows) {
+			<app-lurch-direction />
+		}
 	</div>
 	<app-popup [visible]="popupVisible" (close)="hidePopup()" [page]="popupPage"></app-popup>
 </div>

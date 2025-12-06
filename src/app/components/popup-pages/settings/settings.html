@@ -39,6 +39,21 @@
 		<p class="description">Include jump steps in training</p>
 	</div>
 	<!--  -->
+	<div class="setting">
+		<label class="checkbox-container setting-label">
+			Lurch Direction Arrows
+			<input
+				class="checkbox"
+				type="checkbox"
+				[(ngModel)]="trainerManager.settings.lurchDirArrows"
+			/>
+			<span class="material-symbols-outlined"
+				>{{ trainerManager.settings.lurchDirArrows ? 'toggle_on' : 'toggle_off' }}
+			</span>
+		</label>
+		<p class="description">Display animated arrows that represent the direction of a lurch</p>
+	</div>
+	<!--  -->
 </div>
 <div class="save-container">
 	<button class="save-button" (click)="saveSettings()">Save Changes</button>

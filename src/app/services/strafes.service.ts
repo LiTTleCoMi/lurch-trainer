@@ -505,7 +505,7 @@ export class StrafesService {
 			],
 		},
 		{
-			name: 'Forward Raf (L → R | Single Scroll)',
+			name: 'Forward Raf (L → R → L | Single Scroll)',
 			directions: [
 				[
 					{
@@ -567,7 +567,7 @@ export class StrafesService {
 			],
 		},
 		{
-			name: 'Forward Raf (R → L | Single Scroll)',
+			name: 'Forward Raf (R → L → R | Single Scroll)',
 			directions: [
 				[
 					{

@@ -7,10 +7,11 @@ import { PopupPages } from '../../interfaces/popup-pages.interface';
 import { InputService } from '../../services/input.service';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
 import { LurchDirection } from '../../components/lurch-direction/lurch-direction';
+import { NgClass } from '@angular/common';
 
 @Component({
 	selector: 'app-lurch-trainer',
-	imports: [Overlay, Popup, LurchDirection],
+	imports: [Overlay, Popup, LurchDirection, NgClass],
 	templateUrl: './lurch-trainer.html',
 	styleUrl: './lurch-trainer.scss',
 })

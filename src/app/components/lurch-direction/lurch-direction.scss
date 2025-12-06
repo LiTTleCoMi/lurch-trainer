@@ -3,6 +3,13 @@
 $arrow-height: 30px;
 $arrow-radius: calc($arrow-height * 1.1);
 
+:host {
+	
+	&.hidden {
+		display: none;
+	}
+}
+
 .arrows-container {
 	position: relative;
 

@@ -33,9 +33,7 @@
 	</div>
 	<div class="overlay-container">
 		<app-overlay />
-		@if (trainerManagerService.settings.lurchDirArrows) {
-			<app-lurch-direction />
-		}
+		<app-lurch-direction [ngClass]="{ 'hidden': !trainerManagerService.settings.lurchDirArrows }" />
 	</div>
 	<app-popup [visible]="popupVisible" (close)="hidePopup()" [page]="popupPage"></app-popup>
 </div>

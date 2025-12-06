@@ -8,6 +8,79 @@ import { Action } from '../interfaces/actions.interface';
 export class StrafesService {
 	strafes: Strafes = [
 		{
+			name: 'Forward Pito',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
 			name: 'Forward Ras',
 			directions: [
 				[
@@ -120,6 +193,311 @@ export class StrafesService {
 							{ x: -1, y: -1 },
 						],
 						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Backward Ras',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: -1 }],
+						lurchDirection: { x: -1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: -1 }],
+						lurchDirection: { x: 1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Neo (CW)',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [
+							{ x: 1, y: 0 },
+							{ x: 1, y: -1 },
+						],
+						lurchDirection: { x: 1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: -1 }],
+						lurchDirection: { x: 1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Neo (CCW)',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [
+							{ x: -1, y: 0 },
+							{ x: -1, y: -1 },
+						],
+						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: -1 }],
+						lurchDirection: { x: -1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
 						jump: false,
 						canSkipOver: true,
 					},
@@ -418,6 +796,168 @@ export class StrafesService {
 							{ x: -1, y: -1 },
 						],
 						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Forward Yuki (CW)',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Jump, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: -1 }],
+						lurchDirection: { x: 1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 0 }],
+						lurchDirection: { x: -1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+				],
+			],
+		},
+		{
+			name: 'Forward Yuki (CCW)',
+			directions: [
+				[
+					{
+						suggestedInputs: [
+							{ action: Action.Jump, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
+						jump: true,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: 1 }],
+						lurchDirection: { x: 0, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: 1 }],
+						lurchDirection: { x: -1, y: 1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: -1, y: -1 }],
+						lurchDirection: { x: -1, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Left, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 0, y: -1 }],
+						lurchDirection: { x: 0, y: -1 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Backward, useScroll: false },
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 0 }],
+						lurchDirection: { x: 1, y: 0 },
+						jump: false,
+						canSkipOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Forward, useScroll: true },
+							{ action: Action.Right, useScroll: false },
+						],
+						expectedLurchDirections: [{ x: 1, y: 1 }],
+						lurchDirection: { x: 1, y: 1 },
 						jump: false,
 						canSkipOver: true,
 					},

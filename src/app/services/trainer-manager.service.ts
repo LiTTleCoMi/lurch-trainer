@@ -40,7 +40,6 @@ export class TrainerManagerService {
 	private _lurchDir = new BehaviorSubject<Direction>({ x: 0, y: 0 });
 	lurchDir$ = this._lurchDir.asObservable();
 
-	training = false;
 	selectedStrafe = this.strafesService.strafes[0];
 
 	private activatedActions: BoundAction[] = [];
@@ -64,6 +63,29 @@ export class TrainerManagerService {
 		useJumps: false,
 		lurchDirArrows: true,
 	};
+
+	private _training = false;
+	private trainingListeners: ((t: boolean) => void)[] = [];
+
+	get training(): boolean {
+		return this._training;
+	}
+
+	set training(value: boolean) {
+		if (this._training === value) return;
+		this._training = value;
+		this.onTrainingChanged(value);
+	}
+
+	onTrainingChange(cb: (t: boolean) => void) {
+		this.trainingListeners.push(cb);
+	}
+
+	private onTrainingChanged(value: boolean) {
+		for (const cb of this.trainingListeners) {
+			cb(value);
+		}
+	}
 
 	constructor() {
 		this.inputService.activatedActions$.subscribe({

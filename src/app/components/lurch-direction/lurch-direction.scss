@@ -29,8 +29,6 @@ $arrow-radius: calc($arrow-height * 1.1);
 
 			opacity: 0.1;
 
-			filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-
 			&.animate {
 				animation: slideFade 0.5s ease-out;
 			}
@@ -40,6 +38,7 @@ $arrow-radius: calc($arrow-height * 1.1);
 				opacity: 0.2;
 			}
 			&.blue {
+				filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 				border-bottom: $arrow-height solid colors.$primary-blue;
 				opacity: 0.2;
 			}

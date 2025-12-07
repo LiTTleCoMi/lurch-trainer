@@ -51,6 +51,12 @@ export class LurchDirection implements AfterViewInit {
 			this.currentStep = state.currentStep;
 			this.updateStaticArrowColors();
 		});
+		this.trainerManagerService.onTrainingChange((training) => {
+			if (!training) {
+				this.prevStep = null;
+				this.currentStep = null;
+			}
+		});
 		for (const dir of this.staticDirections) {
 			this.spawnArrow(dir.x, dir.y, true);
 		}

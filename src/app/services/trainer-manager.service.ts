@@ -8,7 +8,7 @@ import { Direction, StrafeStep } from '../interfaces/strafes.interface';
 export interface TrainerState {
 	shouldBePressed: BoundAction[];
 	shouldBeReleased: BoundAction[];
-	currentStepInputs: BoundAction[];
+	currentStep: StrafeStep;
 }
 interface Settings {
 	jumpMethod: InputType;
@@ -26,7 +26,13 @@ export class TrainerManagerService {
 	private _state = new BehaviorSubject<TrainerState>({
 		shouldBePressed: [],
 		shouldBeReleased: [],
-		currentStepInputs: [],
+		currentStep: {
+			suggestedInputs: [],
+			jump: false,
+			expectedLurchDirections: [],
+			lurchDirection: null,
+			canIterateOver: false,
+		},
 	});
 	readonly state$ = this._state.asObservable();
 
@@ -200,7 +206,7 @@ export class TrainerManagerService {
 		this._state.next({
 			shouldBePressed: this.shouldBePressed,
 			shouldBeReleased: this.shouldBeReleased,
-			currentStepInputs: this.currentStep.suggestedInputs,
+			currentStep: this.currentStep,
 		});
 	}
 

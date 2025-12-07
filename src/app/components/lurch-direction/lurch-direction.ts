@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { TrainerManagerService } from '../../services/trainer-manager.service';
+import { StrafeStep } from '../../interfaces/strafes.interface';
 
 interface ArrowInstance {
 	id: number;
@@ -16,7 +17,7 @@ interface ArrowInstance {
 	styleUrls: ['./lurch-direction.scss'],
 })
 export class LurchDirection implements AfterViewInit {
-	private trainer = inject(TrainerManagerService);
+	private trainerManagerService = inject(TrainerManagerService);
 
 	protected overlayWidth = 0;
 	protected overlayHeight = 0;
@@ -34,9 +35,17 @@ export class LurchDirection implements AfterViewInit {
 		{ x: -1, y: 1 },
 	];
 
+	private prevStep: StrafeStep | null = null;
+	private currentStep: StrafeStep | null = null;
+
 	constructor() {
-		this.trainer.lurchDir$.subscribe((dir) => {
+		this.trainerManagerService.lurchDir$.subscribe((dir) => {
+			if (!dir.x && !dir.y) return;
 			this.spawnArrow(dir.x, dir.y);
+		});
+		this.trainerManagerService.state$.subscribe((state) => {
+			this.prevStep = structuredClone(this.currentStep);
+			this.currentStep = state.currentStep;
 		});
 	}
 

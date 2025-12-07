@@ -31,7 +31,7 @@ export class Overlay implements OnInit {
 			next: (state) => {
 				this.shouldBePressed = state.shouldBePressed;
 				this.shouldBeReleased = state.shouldBeReleased;
-				this.currentStepInputs = state.currentStepInputs;
+				this.currentStepInputs = state.currentStep.suggestedInputs;
 			},
 		});
 	}

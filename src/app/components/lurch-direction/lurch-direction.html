@@ -1,4 +1,8 @@
-<div class="arrows-container" [style.width.px]="overlayWidth + 15" [style.height.px]="overlayHeight + 15">
+<div
+	class="arrows-container"
+	[style.width.px]="overlayWidth + 15"
+	[style.height.px]="overlayHeight + 15"
+>
 	@for (a of arrows.values(); track a.id) {
 	<div
 		class="arrow-wrapper"
@@ -6,7 +10,13 @@
 		[style.top.%]="a.posY"
 		[style.transform]="'rotate(' + a.angle + 'deg)'"
 	>
-		<div class="arrow" [class.animate]="!a.isStatic" [class]="trainerManagerService.training ? a.color : ''" (animationend)="removeArrow(a.id)"></div>
+		<div
+			class="arrow"
+			[class.animate]="!a.isStatic"
+			[class]="trainerManagerService.training ? a.color : ''"
+			[class.expected]="a.expected"
+			(animationend)="removeArrow(a.id)"
+		></div>
 	</div>
 	}
 </div>

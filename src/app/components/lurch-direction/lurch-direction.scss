@@ -34,17 +34,18 @@ $arrow-radius: calc($arrow-height * 1.1);
 			}
 
 			&.green {
-				border-bottom: $arrow-height solid colors.$primary-green;
-				opacity: 0.2;
+				filter: drop-shadow(0 0px 5px colors.$primary-green);
+				opacity: 0.6;
 			}
 			&.blue {
-				filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-				border-bottom: $arrow-height solid colors.$primary-blue;
-				opacity: 0.2;
+				filter: drop-shadow(0 0px 5px colors.$primary-blue);
+				opacity: 0.6;
 			}
-			&.red {
-				border-bottom: $arrow-height solid colors.$primary-red;
-				opacity: 0.1;
+			&.red.animate {
+				filter: drop-shadow(0 0px 5px colors.$primary-red);
+				&.expected {
+					filter: drop-shadow(0 0px 5px colors.$primary-green);
+				}
 			}
 		}
 	}
@@ -52,7 +53,7 @@ $arrow-radius: calc($arrow-height * 1.1);
 
 @keyframes slideFade {
 	0% {
-		opacity: 0.7;
+		opacity: 0.8;
 		transform: translateY(0) scale(1);
 	}
 	100% {

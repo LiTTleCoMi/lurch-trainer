@@ -11,6 +11,7 @@ interface ArrowInstance {
 	posY: number;
 	isStatic: boolean;
 	color: string;
+	expected: boolean;
 }
 
 @Component({
@@ -99,9 +100,21 @@ export class LurchDirection implements AfterViewInit {
 			posY: this.getPositionY(y),
 			isStatic,
 			color: this.getArrowColor(x, y),
+			expected: this.isDirectionExpected(x, y),
 		};
 
 		this.arrows.set(id, arrow);
+	}
+
+	private isDirectionExpected(x: number, y: number): boolean {
+		const expectedDirections = this.currentStep?.expectedLurchDirections;
+		if (!expectedDirections) return false;
+		for (const dir of expectedDirections) {
+			if (dir.x === x && dir.y === y) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected getArrowColor(x: number, y: number): string {
@@ -113,7 +126,7 @@ export class LurchDirection implements AfterViewInit {
 		} else if (prevLurchDir && prevLurchDir.x === x && prevLurchDir.y === y) {
 			return 'blue';
 		}
-		return '';
+		return 'red';
 	}
 
 	protected removeArrow(id: number) {

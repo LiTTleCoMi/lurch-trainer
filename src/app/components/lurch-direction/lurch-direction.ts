@@ -9,15 +9,18 @@ interface ArrowInstance {
 	angle: number;
 	posX: number;
 	posY: number;
+	isStatic: boolean;
+	color: string;
 }
 
 @Component({
 	selector: 'app-lurch-direction',
 	templateUrl: './lurch-direction.html',
 	styleUrls: ['./lurch-direction.scss'],
+	imports: [],
 })
 export class LurchDirection implements AfterViewInit {
-	private trainerManagerService = inject(TrainerManagerService);
+	protected trainerManagerService = inject(TrainerManagerService);
 
 	protected overlayWidth = 0;
 	protected overlayHeight = 0;
@@ -46,7 +49,11 @@ export class LurchDirection implements AfterViewInit {
 		this.trainerManagerService.state$.subscribe((state) => {
 			this.prevStep = structuredClone(this.currentStep);
 			this.currentStep = state.currentStep;
+			this.updateStaticArrowColors();
 		});
+		for (const dir of this.staticDirections) {
+			this.spawnArrow(dir.x, dir.y, true);
+		}
 	}
 
 	ngAfterViewInit() {
@@ -66,7 +73,14 @@ export class LurchDirection implements AfterViewInit {
 		overlayObs.observe(overlayRef);
 	}
 
-	private spawnArrow(x: number, y: number) {
+	private updateStaticArrowColors() {
+		for (const arrow of this.arrows.values()) {
+			if (!arrow.isStatic) continue;
+			arrow.color = this.getArrowColor(arrow.x, arrow.y);
+		}
+	}
+
+	private spawnArrow(x: number, y: number, isStatic: boolean = false) {
 		const id = this.nextId++;
 		const angle = this.getAngle(x, y);
 
@@ -77,9 +91,23 @@ export class LurchDirection implements AfterViewInit {
 			angle,
 			posX: this.getPositionX(x),
 			posY: this.getPositionY(y),
+			isStatic,
+			color: this.getArrowColor(x, y),
 		};
 
 		this.arrows.set(id, arrow);
+	}
+
+	protected getArrowColor(x: number, y: number): string {
+		const currentLurchDir = this.currentStep?.lurchDirection;
+		const prevLurchDir = this.prevStep?.lurchDirection;
+		if (!currentLurchDir) return '';
+		if (currentLurchDir.x === x && currentLurchDir.y === y) {
+			return 'green';
+		} else if (prevLurchDir && prevLurchDir.x === x && prevLurchDir.y === y) {
+			return 'blue';
+		}
+		return '';
 	}
 
 	protected removeArrow(id: number) {

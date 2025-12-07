@@ -4,7 +4,6 @@ $arrow-height: 30px;
 $arrow-radius: calc($arrow-height * 1.1);
 
 :host {
-	
 	&.hidden {
 		display: none;
 	}
@@ -34,6 +33,19 @@ $arrow-radius: calc($arrow-height * 1.1);
 
 			&.animate {
 				animation: slideFade 0.5s ease-out;
+			}
+
+			&.green {
+				border-bottom: $arrow-height solid colors.$primary-green;
+				opacity: 0.2;
+			}
+			&.blue {
+				border-bottom: $arrow-height solid colors.$primary-blue;
+				opacity: 0.2;
+			}
+			&.red {
+				border-bottom: $arrow-height solid colors.$primary-red;
+				opacity: 0.1;
 			}
 		}
 	}

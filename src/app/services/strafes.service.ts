@@ -14,13 +14,22 @@ export class StrafesService {
 					{
 						suggestedInputs: [
 							{ action: Action.Left, useScroll: false },
-							{ action: Action.Forward, useScroll: false },
 							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [],
+						lurchDirection: null,
+						jump: true,
+						canIterateOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Left, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
 						],
 						expectedLurchDirections: [{ x: -1, y: 1 }],
 						lurchDirection: { x: -1, y: 1 },
-						jump: true,
-						canIterateOver: true,
+						jump: false,
+						canIterateOver: false,
 					},
 					{
 						suggestedInputs: [
@@ -48,13 +57,22 @@ export class StrafesService {
 					{
 						suggestedInputs: [
 							{ action: Action.Right, useScroll: false },
-							{ action: Action.Forward, useScroll: false },
 							{ action: Action.Jump, useScroll: false },
+						],
+						expectedLurchDirections: [],
+						lurchDirection: null,
+						jump: true,
+						canIterateOver: true,
+					},
+					{
+						suggestedInputs: [
+							{ action: Action.Right, useScroll: false },
+							{ action: Action.Forward, useScroll: false },
 						],
 						expectedLurchDirections: [{ x: 1, y: 1 }],
 						lurchDirection: { x: 1, y: 1 },
-						jump: true,
-						canIterateOver: true,
+						jump: false,
+						canIterateOver: false,
 					},
 					{
 						suggestedInputs: [
